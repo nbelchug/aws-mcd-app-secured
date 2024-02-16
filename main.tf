@@ -30,9 +30,9 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-provider "ciscomcd" {
-  api_key_file = file(var.ciscomcd_api_key_file)
-}
+#provider "ciscomcd" {
+#  api_key_file = file(var.ciscomcd_api_key_file)
+#}
 
 
 module "app-infra-aws" {

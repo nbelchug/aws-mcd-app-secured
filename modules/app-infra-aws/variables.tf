@@ -6,6 +6,12 @@ variable "application_name" {
   type        = string
 }
 
+variable "environment" {
+	description ="environmet dev val ref prod for the application"
+	type = string
+	default= "development"
+}
+
 
 variable "tags" {
   description = "Tags to set on the application."

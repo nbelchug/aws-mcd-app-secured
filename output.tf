@@ -26,3 +26,11 @@ output "fe-nodes-id" {
 output "be-nodes-id" {
     value = module.app-infra-aws.backend-nodes-id
 }
+
+output "application-name"{
+    value = module.app-infra-aws.application-name
+
+}
+output "application-environment" {
+    value =module.app-infra-aws.environment 
+}

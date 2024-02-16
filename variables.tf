@@ -1,10 +1,3 @@
-
-variable "appname"{
-    description = "name of application to deploy"
-    type        = string
-    default     = "TEASHOP"
-} 
-
 variable "aws-region" {
     description = "aws region to use"
     default = "us-east-1"
@@ -23,12 +16,6 @@ variable "az2" {
   description = "availability zone 2"
   type        = string
   default     = "us-east-1b"
-}
-
-variable "environment" {
-	description ="environmet dev val ref prod for the application"
-	type = string
-	default= "development"
 }
 
 

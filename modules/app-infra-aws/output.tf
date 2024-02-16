@@ -1,4 +1,15 @@
 
+output "application-name"{
+    description = "name of the application"
+    value = var.application_name
+}
+
+
+output "environment"{
+    description = "Dev Val Prod"
+    value = var.environment
+}
+
 output "frontend-nodes-id" {
     description = "list of front end nodes private IP addresses"
     value = aws_instance.ec2_frontend.id

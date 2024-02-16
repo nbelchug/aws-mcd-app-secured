@@ -23,7 +23,7 @@ resource "aws_vpc" "custom_vpc_fe" {
    tags = {
       Name = "mcd-demo-teashop"
       Tier = "front-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
    }
 }
@@ -37,7 +37,7 @@ resource "aws_vpc" "custom_vpc_be" {
    tags = {
       Name = "mcd-demo-teashop"
       Tier = "front-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    }
@@ -52,7 +52,7 @@ resource "aws_subnet" "public_subnet" {
    tags = {
       Name = "mcd-demo-teashop-frontend-subnet"
       Tier = "front-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    }
@@ -67,7 +67,7 @@ resource "aws_subnet" "private_subnet" {
    tags = {
       Name = "mcd-demo-teashop-backend-subnet"
       Tier = "back-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    }
@@ -83,7 +83,7 @@ resource "aws_internet_gateway" "igw_fe" {
    tags = {
       Name = "mcd-demo-teashop-frontend-igw"
       Tier = "front-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    }
@@ -95,7 +95,7 @@ resource "aws_internet_gateway" "igw" {
    tags = {
       Name = "mcd-demo-teashop-backend-igw"
       Tier = "back-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    }
@@ -113,7 +113,7 @@ resource "aws_route_table" "rt_fe" {
   tags = {
       Name = "mcd-demo-teashop-fe-to-igw-rt"
       Tier = "front-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
   }
@@ -130,7 +130,7 @@ resource "aws_route_table" "rt_be" {
   tags = {
       Name = "mcd-demo-teashop-be-to-igw-rt"
       Tier = "back-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
   }
@@ -160,7 +160,7 @@ resource "aws_security_group" "frontend_sg" {
   tags = {
     Name = "mcd-demo-teashop-frontend-sg"
     Tier = "front-end"
-    Application = var.appname
+    Application = var.application_name
    Environment = var.environment
 
   }
@@ -213,7 +213,7 @@ resource "aws_security_group" "backend_sg" {
   tags = {
    Name = "mcd-demo-teashop-backend-sg"
    Tier = "back-end"
-   Application = var.appname
+   Application = var.application_name
    Environment = var.environment
 
   }
@@ -273,7 +273,7 @@ resource "aws_instance" "ec2_backend" {
    tags = {
       Name = "mcd-demo-teashop-backend"
       Tier = "front-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    } 
@@ -353,7 +353,7 @@ resource "aws_instance" "ec2_frontend" {
    tags = {
       Name = "mcd-demo-teashop-frontend"
       Tier = "back-end"
-      Application = var.appname
+      Application = var.application_name
       Environment = var.environment
 
    }
