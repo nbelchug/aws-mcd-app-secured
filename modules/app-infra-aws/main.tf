@@ -21,7 +21,7 @@ resource "aws_vpc" "custom_vpc_fe" {
    enable_dns_support   = true
 
    tags = {
-      Name = "mcd-demo-teashop"
+      Name = "mcd-demo-teashop-frontend"
       Tier = "front-end"
       Application = var.application_name
       Environment = var.environment
@@ -35,7 +35,7 @@ resource "aws_vpc" "custom_vpc_be" {
    enable_dns_support   = true
 
    tags = {
-      Name = "mcd-demo-teashop"
+      Name = "mcd-demo-teashop-backend"
       Tier = "front-end"
       Application = var.application_name
       Environment = var.environment
