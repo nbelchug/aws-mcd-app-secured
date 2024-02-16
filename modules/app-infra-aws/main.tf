@@ -42,8 +42,9 @@ resource "aws_vpc" "custom_vpc_be" {
 
    }
 }
-
-# public subnet 1
+# -----------------------------------------------
+# SUBNETS
+# public subnet 
 resource "aws_subnet" "public_subnet" {   
    vpc_id            = aws_vpc.custom_vpc_fe.id
    cidr_block        = var.public_subnet
@@ -74,8 +75,8 @@ resource "aws_subnet" "private_subnet" {
 }
 
 
-  
-
+# ------------------------------------------------------  
+# INTERNET GATEWAYS
 # creating internet gateway for Front End
 resource "aws_internet_gateway" "igw_fe" {
    vpc_id = aws_vpc.custom_vpc_fe.id
@@ -88,6 +89,9 @@ resource "aws_internet_gateway" "igw_fe" {
 
    }
 } 
+
+
+
 # creating internet gateway for Back End
 resource "aws_internet_gateway" "igw_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
@@ -100,8 +104,22 @@ resource "aws_internet_gateway" "igw_be" {
 
    }
 } 
+#----------------------------------------
+# TRANSIT GATEWAYS ACROSS FE AND BE VPCs
+resource "aws_ec2_transit_gateway" "fe-be-tgw" {
+  description                     = "Transit Gateway between FE and BE for app"
+  default_route_table_association = "disable"
+  default_route_table_propagation = "disable"
+  tags                            = {
+    Name                          = "mcd-demo-teashop-fe-be-tgw"
+    Application                   = var.application_name
+    Environment                  = var.Environment
+  }
+}
 
 
+# ---------------------------------------------
+# ROUTE TABLES
 # creating route table for Front End
 resource "aws_route_table" "rt_fe" {
    vpc_id = aws_vpc.custom_vpc_fe.id
@@ -123,7 +141,7 @@ resource "aws_route_table" "rt_fe" {
 resource "aws_route_table" "rt_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
    route {
-      cidr_block = var.public_subnet
+      cidr_block = "0.0.0.0/0"
       gateway_id = aws_internet_gateway.igw_be.id
   }
 
