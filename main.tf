@@ -33,6 +33,6 @@ module "app-infra-aws" {
   application_name = var.appname
 }
 
-#module "provision-app" {
-#  source = "./modules/provision-app"
-#}
+module "provision-mcd" {
+  source = "./modules/provision-mcd"
+}
