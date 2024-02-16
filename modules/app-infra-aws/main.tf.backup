@@ -14,55 +14,37 @@
 # VPC BLOCK
 # creating VPC
 
-resource "aws_vpc" "custom_vpc_fe" {
-   cidr_block       = var.vpc_cidr_frontend
+resource "aws_vpc" "custom_vpc" {
+   cidr_block       = var.vpc_cidr
 
    enable_dns_hostnames = true
    enable_dns_support   = true
 
    tags = {
       Name = "mcd-demo-teashop"
-      Tier = "front-end"
-      Application = var.appname
    }
 }
 
-resource "aws_vpc" "custom_vpc_be" {
-   cidr_block       = var.vpc_cidr_backend
-
-   enable_dns_hostnames = true
-   enable_dns_support   = true
-
-   tags = {
-      Name = "mcd-demo-teashop"
-      Tier = "front-end"
-      Application = var.appname
-   }
-}
 
 # public subnet 1
 resource "aws_subnet" "public_subnet" {   
-   vpc_id            = aws_vpc.custom_vpc_fe.id
+   vpc_id            = aws_vpc.custom_vpc.id
    cidr_block        = var.public_subnet
    availability_zone = var.az1
 
    tags = {
-      Name = "mcd-demo-teashop-frontend-subnet"
-      Tier = "front-end"
-      Application = var.appname
+      name = "mcd-demo-teashop-frontend-subnet"
    }
 }
 
 # private subnet 1
 resource "aws_subnet" "private_subnet" {   
-   vpc_id            = aws_vpc.custom_vpc_be.id
+   vpc_id            = aws_vpc.custom_vpc.id
    cidr_block        = var.private_subnet
    availability_zone = var.az1
 
    tags = {
-      Name = "mcd-demo-teashop-backend-subnet"
-      Tier = "back-end"
-      Application = var.appname
+      name = "mcd-demo-teashop-backend-subnet"
    }
 }
 
@@ -74,11 +56,9 @@ resource "aws_internet_gateway" "igw" {
    vpc_id = aws_vpc.custom_vpc.id
 
    tags = {
-      Name = "mcd-demo-teashop-igw"
-      Tier = "common"
-      Application = var.appname
+      name = "mcd-demo-teashop-igw"
    }
-} 
+}
 
 
 # creating route table
@@ -90,9 +70,7 @@ resource "aws_route_table" "rt" {
   }
 
   tags = {
-      Name = "mcd-demo-teashop-rt"
-      Tier = "common"
-      Application = var.appname
+      name = "mcd-demo-teashop-rt"
   }
 }
 
@@ -118,8 +96,6 @@ resource "aws_security_group" "frontend_sg" {
 
   tags = {
     Name = "mcd-demo-teashop-frontend-sg"
-    Tier = "front-end"
-    Application = var.appname
   }
 }
 
@@ -169,8 +145,6 @@ resource "aws_security_group" "backend_sg" {
 
   tags = {
     Name = "mcd-demo-teashop-backend-sg"
-    Tier = "back-end"
-    Application = var.appname
   }
 }
 
@@ -227,8 +201,6 @@ resource "aws_instance" "ec2_backend" {
    } 
    tags = {
       Name = "mcd-demo-teashop-backend"
-      Tier = "front-end"
-      Application = var.appname
    } 
 
    user_data = file("${path.module}/cloud-init-backend.yaml")
@@ -305,8 +277,6 @@ resource "aws_instance" "ec2_frontend" {
    } 
    tags = {
       Name = "mcd-demo-teashop-frontend"
-      Tier = "back-end"
-      Application = var.appname
    }
 
 

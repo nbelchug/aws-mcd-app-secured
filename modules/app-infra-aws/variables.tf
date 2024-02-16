@@ -6,19 +6,30 @@ variable "application_name" {
   type        = string
 }
 
+
 variable "tags" {
   description = "Tags to set on the application."
   type        = map(string)
   default     = {}
 }
-
 # custom VPC variable
 variable "vpc_cidr" {
   description = "custom vpc CIDR notation"
   type        = string
   default     = "10.0.0.0/16"
 }
-
+# custom VPC variable
+variable "vpc_cidr_frontend" {
+  description = "custom vpc CIDR notation"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+# custom VPC variable
+variable "vpc_cidr_backend" {
+  description = "custom vpc CIDR notation"
+  type        = string
+  default     = "10.1.0.0/16"
+}
 
 # public subnet 1 variable
 variable "public_subnet" {
@@ -33,7 +44,7 @@ variable "public_subnet" {
 variable "private_subnet" {
   description = "private subnet 2 CIDR notation"
   type        = string
-  default     = "10.0.2.0/24"
+  default     = "10.1.2.0/24"
 }
 
 
