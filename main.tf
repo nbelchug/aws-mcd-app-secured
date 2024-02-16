@@ -17,10 +17,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.33.0"
     }
-    ciscomcd = {
-      source = "CiscoDevNet/ciscomcd"
-      version = "0.2.4"
-    }
+   #ciscomcd = {
+    #  source = "CiscoDevNet/ciscomcd"
+    #  version = "0.2.4"
+    #}
 
   }
   required_version = "~> 1.3"
