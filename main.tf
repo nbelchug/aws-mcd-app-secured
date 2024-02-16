@@ -37,7 +37,6 @@ provider "aws" {
 
 module "app-infra-aws" {
   source = "./modules/app-infra-aws"
-  application_name = var.appname
 }
 
 #module "provision-mcd" {
