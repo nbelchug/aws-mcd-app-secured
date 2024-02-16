@@ -21,7 +21,7 @@ runcmd:
   - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   - sudo chmod +x /usr/local/bin/docker-compose
   - sudo hostnamectl set-hostname FRONTEND-TEASTORE 
-  - git clone https://github.com/jpianigiani-cisco/aws-mcd-app.git
+  #- cd /tmp && git clone https://github.com/jpianigiani-cisco/aws-mcd-app.git
 #  - sudo docker-compose -f /webapp-aws-mcd/modules/app-infra-aws/scripts/docker-compose_default_frontend.yaml up -d
 
 

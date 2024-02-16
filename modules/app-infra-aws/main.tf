@@ -240,7 +240,7 @@ resource "null_resource" "backend-config"{
 
    provisioner "remote-exec" {
       inline = ["sudo chmod 770 /tmp/backend.sh",
-               "sudo /tmp/backend.sh",]
+               "sudo sh /tmp/backend.sh",]
 
    }
    connection {
@@ -319,8 +319,8 @@ resource "null_resource" "frontend-config"{
    }
    provisioner "remote-exec" {
       inline = ["chmod a+x /tmp/frontend.sh",
-               "echo 'COMMAND: sudo /tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}'",
-               "sudo /tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}",]
+               "echo 'COMMAND: sudo sh /tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}'",
+               "sudo sh /tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}",]
 
    }
 
