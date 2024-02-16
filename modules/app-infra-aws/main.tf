@@ -123,7 +123,7 @@ resource "aws_route_table" "rt_fe" {
 resource "aws_route_table" "rt_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
    route {
-      cidr_block = aws_subnet.public_subnet
+      cidr_block = var.public_subnet
       gateway_id = aws_internet_gateway.igw_be.id
   }
 
