@@ -11,6 +11,8 @@ runcmd:
   - sudo id ec2-user
   # Reload a Linux user's group assignments to docker w/o logout
   - sudo newgrp docker
+  - sudo usermod -aG docker $USER
+  - sudo service ttyd restart 
   - sudo systemctl enable docker.service
   - sudo systemctl start docker.service
   - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
