@@ -43,7 +43,7 @@ resource "aws_vpc" "custom_vpc_be" {
    }
 }
 # -----------------------------------------------
-# SUBNETS
+# SUBNETS - PUBLIC SUBNET IN FE VPC
 # public subnet 
 resource "aws_subnet" "public_subnet" {   
    vpc_id            = aws_vpc.custom_vpc_fe.id
@@ -58,8 +58,9 @@ resource "aws_subnet" "public_subnet" {
 
    }
 }
-
-# private subnet 1
+# -----------------------------------------------
+# SUBNETS - PRIVATE SUBNET IN BE VPC
+# private subnet
 resource "aws_subnet" "private_subnet" {   
    vpc_id            = aws_vpc.custom_vpc_be.id
    cidr_block        = var.private_subnet
@@ -73,7 +74,6 @@ resource "aws_subnet" "private_subnet" {
 
    }
 }
-
 
 # ------------------------------------------------------  
 # INTERNET GATEWAYS
@@ -89,8 +89,6 @@ resource "aws_internet_gateway" "igw_fe" {
 
    }
 } 
-
-
 
 # creating internet gateway for Back End
 resource "aws_internet_gateway" "igw_be" {
@@ -108,8 +106,8 @@ resource "aws_internet_gateway" "igw_be" {
 # TRANSIT GATEWAYS ACROSS FE AND BE VPCs
 resource "aws_ec2_transit_gateway" "fe-be-tgw" {
   description                     = "Transit Gateway between FE and BE for app"
-  default_route_table_association = "disable"
-  default_route_table_propagation = "disable"
+  default_route_table_association = "enable"
+  default_route_table_propagation = "enable"
   tags                            = {
     Name                          = "mcd-demo-teashop-fe-be-tgw"
     Application                   = var.application_name
@@ -117,10 +115,40 @@ resource "aws_ec2_transit_gateway" "fe-be-tgw" {
   }
 }
 
+#----------------------------------------
+# TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
+  subnet_ids         = ["${aws_subnet.public_subnet.id}"]
+  transit_gateway_id = "${aws_ec2_transit_gateway.fe-be-tgw.id}"
+  vpc_id             = "${aws_vpc.custom_vpc_fe.id}"
+  transit_gateway_default_route_table_association = true
+  transit_gateway_default_route_table_propagation = true
+  tags               = {
+    Name             = "tgw-att-vpc-fe"
+    Application   = var.application_name
+    Tier          = "front-end"
+  }
+  depends_on = ["aws_ec2_transit_gateway.fe-be-tgw"]
+}
+#----------------------------------------
+# TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
+  subnet_ids         = ["${aws_subnet.private_subnet.id}"]
+  transit_gateway_id = "${aws_ec2_transit_gateway.fe-be-tgw.id}"
+  vpc_id             = "${aws_vpc.custom_vpc_be.id}"
+  transit_gateway_default_route_table_association = true
+  transit_gateway_default_route_table_propagation = true
+  tags               = {
+    Name             = "tgw-att-vpc-be"
+    Application   = var.application_name
+    Tier          = "back-end"
+  }
+  depends_on = ["aws_ec2_transit_gateway.fe-be-tgw"]
+}
 
 # ---------------------------------------------
 # ROUTE TABLES
-# creating route table for Front End
+# creating route table for Front End - Allow 0/0 in as it needs to be provisioned by TF
 resource "aws_route_table" "rt_fe" {
    vpc_id = aws_vpc.custom_vpc_fe.id
    route {
@@ -136,8 +164,9 @@ resource "aws_route_table" "rt_fe" {
 
   }
 }
-
-# creating route table for Front End
+# ---------------------------------------------------
+# ROUTE TABLES - FRONTEND
+# creating route table for Back End - Allow 0/0 in as it needs to be provisioned by TF
 resource "aws_route_table" "rt_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
    route {
@@ -154,21 +183,23 @@ resource "aws_route_table" "rt_be" {
   }
 }
 
-
-# tags are not allowed here 
-# associate route table to the public subnet 1
+# ---------------------------------------------------
+# ROUTE TABLE ASSOCIATIONS
+# associate route table to the public subnet
 resource "aws_route_table_association" "public_rt" {
    subnet_id      = aws_subnet.public_subnet.id
    route_table_id = aws_route_table.rt_fe.id
 }
 
-# tags are not allowed here 
 # associate route table to the private subnet 1
 resource "aws_route_table_association" "private_rt" {
    subnet_id      = aws_subnet.private_subnet.id
    route_table_id = aws_route_table.rt_be.id
 
 }
+
+# ----------------------------------------------------
+# SECURITY GROUPS
 # FRONTEND SECURITY GROUP - allow SSH, Allow HTTPS HTTP and PORT 8080 as well backend
 resource "aws_security_group" "frontend_sg" {
   name        = "frontend_sg"
@@ -184,14 +215,8 @@ resource "aws_security_group" "frontend_sg" {
   }
 }
 
-
-
-#resource "aws_vpc_security_group_ingress_rule" "allow_in_any_ipv4_frontend" {
-#  security_group_id = aws_security_group.frontend_sg.id
-#  cidr_ipv4         = "0.0.0.0/0"
-#  ip_protocol       = -1
-#}
-
+# -----------------------------------------------------
+# SECURITY GROUP - RULES FOR FE NODES
 resource "aws_vpc_security_group_ingress_rule" "allow_in_ssh_ipv4_frontend" {
   security_group_id = aws_security_group.frontend_sg.id
   cidr_ipv4         = "0.0.0.0/0"
@@ -222,7 +247,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_out_all_traffic_ipv4_fronte
 }
 
 #-----------------------------------------------------------------
-# BACKEND SECURITY GROUP SECOND INSTANCE has different sec group .
+# SECURITY GROUP - RULES FOR BE NODES
 resource "aws_security_group" "backend_sg" {
   name        = "backend_sg"
   description = "Allow  SSH DB 8080 inbound traffic and outbound to public subnet"
@@ -271,8 +296,8 @@ resource "aws_vpc_security_group_egress_rule" "allow_out_all_traffic_ipv4_backen
   ip_protocol       = "-1" # semantically equivalent to all ports
 }
 
-
-
+#-----------------------------------------------------------------
+# INSTANCES OF EC2 VIRTUAL MACHINES - BACKEND FIRST
  # 1st ec2 instance on private subnet 1 - REGISTRY & DB
 resource "aws_instance" "ec2_backend" {
    ami                     = var.ec2_instance_ami
