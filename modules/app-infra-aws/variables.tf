@@ -4,6 +4,7 @@
 variable "application_name" {
   description = "Name of the application. Must be unique."
   type        = string
+  default = "TEA-SHOP"
 }
 
 variable "environment" {
@@ -18,6 +19,21 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+# AZ 1
+variable "az1" {
+  description = "availability zone 1"
+  type        = string
+  default     = "us-east-1a"
+}
+
+# AZ 2
+variable "az2" {
+  description = "availability zone 2"
+  type        = string
+  default     = "us-east-1b"
+}
+
 # custom VPC variable
 variable "vpc_cidr" {
   description = "custom vpc CIDR notation"

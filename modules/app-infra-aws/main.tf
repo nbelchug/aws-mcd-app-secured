@@ -89,7 +89,7 @@ resource "aws_internet_gateway" "igw_fe" {
    }
 } 
 # creating internet gateway for Back End
-resource "aws_internet_gateway" "igw" {
+resource "aws_internet_gateway" "igw_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
 
    tags = {
@@ -123,7 +123,7 @@ resource "aws_route_table" "rt_fe" {
 resource "aws_route_table" "rt_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
    route {
-      cidr_block = "0.0.0.0/0"
+      cidr_block = aws_subnet.public_subnet
       gateway_id = aws_internet_gateway.igw_be.id
   }
 
@@ -155,7 +155,7 @@ resource "aws_route_table_association" "private_rt" {
 resource "aws_security_group" "frontend_sg" {
   name        = "frontend_sg"
   description = "Allow SSH 8080 inbound traffic and all outbound traffic, allow 3306 and 8080 to backend"
-  vpc_id      = aws_vpc.custom_vpc.id
+  vpc_id      = aws_vpc.custom_vpc_fe.id
 
   tags = {
     Name = "mcd-demo-teashop-frontend-sg"
@@ -208,7 +208,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_out_all_traffic_ipv4_fronte
 resource "aws_security_group" "backend_sg" {
   name        = "backend_sg"
   description = "Allow  SSH DB 8080 inbound traffic and outbound to public subnet"
-  vpc_id      = aws_vpc.custom_vpc.id
+  vpc_id      = aws_vpc.custom_vpc_be.id
 
   tags = {
    Name = "mcd-demo-teashop-backend-sg"
