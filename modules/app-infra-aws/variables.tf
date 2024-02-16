@@ -48,21 +48,6 @@ variable "private_subnet" {
 }
 
 
-# AZ 1
-variable "az1" {
-  description = "availability zone 1"
-  type        = string
-  default     = "us-east-1a"
-}
-
-
-# AZ 2
-variable "az2" {
-  description = "availability zone 2"
-  type        = string
-  default     = "us-east-1b"
-}
-
 
 # ec2 instance ami for Linux
 variable "ec2_instance_ami" {

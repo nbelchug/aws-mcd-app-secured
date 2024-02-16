@@ -24,6 +24,7 @@ resource "aws_vpc" "custom_vpc_fe" {
       Name = "mcd-demo-teashop"
       Tier = "front-end"
       Application = var.appname
+      Environment = var.environment
    }
 }
 
@@ -37,6 +38,8 @@ resource "aws_vpc" "custom_vpc_be" {
       Name = "mcd-demo-teashop"
       Tier = "front-end"
       Application = var.appname
+      Environment = var.environment
+
    }
 }
 
@@ -50,6 +53,8 @@ resource "aws_subnet" "public_subnet" {
       Name = "mcd-demo-teashop-frontend-subnet"
       Tier = "front-end"
       Application = var.appname
+      Environment = var.environment
+
    }
 }
 
@@ -63,51 +68,87 @@ resource "aws_subnet" "private_subnet" {
       Name = "mcd-demo-teashop-backend-subnet"
       Tier = "back-end"
       Application = var.appname
+      Environment = var.environment
+
    }
 }
 
 
   
 
-# creating internet gateway 
-resource "aws_internet_gateway" "igw" {
-   vpc_id = aws_vpc.custom_vpc.id
+# creating internet gateway for Front End
+resource "aws_internet_gateway" "igw_fe" {
+   vpc_id = aws_vpc.custom_vpc_fe.id
 
    tags = {
-      Name = "mcd-demo-teashop-igw"
-      Tier = "common"
+      Name = "mcd-demo-teashop-frontend-igw"
+      Tier = "front-end"
       Application = var.appname
+      Environment = var.environment
+
+   }
+} 
+# creating internet gateway for Back End
+resource "aws_internet_gateway" "igw" {
+   vpc_id = aws_vpc.custom_vpc_be.id
+
+   tags = {
+      Name = "mcd-demo-teashop-backend-igw"
+      Tier = "back-end"
+      Application = var.appname
+      Environment = var.environment
+
    }
 } 
 
 
-# creating route table
-resource "aws_route_table" "rt" {
-   vpc_id = aws_vpc.custom_vpc.id
+# creating route table for Front End
+resource "aws_route_table" "rt_fe" {
+   vpc_id = aws_vpc.custom_vpc_fe.id
    route {
       cidr_block = "0.0.0.0/0"
-      gateway_id = aws_internet_gateway.igw.id
+      gateway_id = aws_internet_gateway.igw_fe.id
   }
 
   tags = {
-      Name = "mcd-demo-teashop-rt"
-      Tier = "common"
+      Name = "mcd-demo-teashop-fe-to-igw-rt"
+      Tier = "front-end"
       Application = var.appname
+      Environment = var.environment
+
   }
 }
+
+# creating route table for Front End
+resource "aws_route_table" "rt_be" {
+   vpc_id = aws_vpc.custom_vpc_be.id
+   route {
+      cidr_block = "0.0.0.0/0"
+      gateway_id = aws_internet_gateway.igw_be.id
+  }
+
+  tags = {
+      Name = "mcd-demo-teashop-be-to-igw-rt"
+      Tier = "back-end"
+      Application = var.appname
+      Environment = var.environment
+
+  }
+}
+
 
 # tags are not allowed here 
 # associate route table to the public subnet 1
 resource "aws_route_table_association" "public_rt" {
    subnet_id      = aws_subnet.public_subnet.id
-   route_table_id = aws_route_table.rt.id
+   route_table_id = aws_route_table.rt_fe.id
 }
 
 # tags are not allowed here 
 # associate route table to the private subnet 1
 resource "aws_route_table_association" "private_rt" {
    subnet_id      = aws_subnet.private_subnet.id
-   route_table_id = aws_route_table.rt.id
+   route_table_id = aws_route_table.rt_be.id
 
 }
 # FRONTEND SECURITY GROUP - allow SSH, Allow HTTPS HTTP and PORT 8080 as well backend
@@ -120,6 +161,8 @@ resource "aws_security_group" "frontend_sg" {
     Name = "mcd-demo-teashop-frontend-sg"
     Tier = "front-end"
     Application = var.appname
+   Environment = var.environment
+
   }
 }
 
@@ -168,9 +211,11 @@ resource "aws_security_group" "backend_sg" {
   vpc_id      = aws_vpc.custom_vpc.id
 
   tags = {
-    Name = "mcd-demo-teashop-backend-sg"
-    Tier = "back-end"
-    Application = var.appname
+   Name = "mcd-demo-teashop-backend-sg"
+   Tier = "back-end"
+   Application = var.appname
+   Environment = var.environment
+
   }
 }
 
@@ -229,6 +274,8 @@ resource "aws_instance" "ec2_backend" {
       Name = "mcd-demo-teashop-backend"
       Tier = "front-end"
       Application = var.appname
+      Environment = var.environment
+
    } 
 
    user_data = file("${path.module}/cloud-init-backend.yaml")
@@ -307,6 +354,8 @@ resource "aws_instance" "ec2_frontend" {
       Name = "mcd-demo-teashop-frontend"
       Tier = "back-end"
       Application = var.appname
+      Environment = var.environment
+
    }
 
 
