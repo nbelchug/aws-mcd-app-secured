@@ -111,7 +111,7 @@ resource "aws_ec2_transit_gateway" "fe-be-tgw" {
   tags                            = {
     Name                          = "mcd-demo-teashop-fe-be-tgw"
     Application                   = var.application_name
-    Environment                  = var.Environment
+    Environment                  = var.environment
   }
 }
 
