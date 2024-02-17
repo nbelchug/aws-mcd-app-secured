@@ -188,7 +188,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
 #----------------------------------------
 # TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
-  subnet_ids         = aws_subnet.private_subnet.id
+  subnet_ids         = [aws_subnet.private_subnet.id]
   transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
   vpc_id             = aws_vpc.custom_vpc_be.id
   transit_gateway_default_route_table_association = false
