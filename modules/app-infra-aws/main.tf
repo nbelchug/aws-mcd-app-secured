@@ -150,7 +150,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
 # ---------------------------------------------
 # ROUTE TABLES - FRONTEND
 # creating route table for Front End - Allow 0/0 in as it needs to be provisioned by TF
-resource "aws_route_table" "rt_fe" {
+resource "aws_default_route_table" "rt_fe" {
    vpc_id = aws_vpc.custom_vpc_fe.id
    route {
       cidr_block = "0.0.0.0/0"
@@ -161,7 +161,10 @@ resource "aws_route_table" "rt_fe" {
       gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
 
    }
-  tags = {
+
+   depends_on = [aws_ec2_transit_gateway.fe-be-tgw.id]
+
+   tags = {
       Name = "mcd-demo-teashop-fe-to-tgw-and-igw-rt"
       Tier = "front-end"
       Application = var.application_name
@@ -172,7 +175,7 @@ resource "aws_route_table" "rt_fe" {
 # ---------------------------------------------------
 # ROUTE TABLES - BACKEND
 # creating route table for Back End - Allow 0/0 in as it needs to be provisioned by TF
-resource "aws_route_table" "rt_be" {
+resource "aws_default_route_table" "rt_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
    route {
       cidr_block = "0.0.0.0/0"
@@ -183,7 +186,10 @@ resource "aws_route_table" "rt_be" {
       gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
 
    }
-  tags = {
+
+   depends_on = [aws_ec2_transit_gateway.fe-be-tgw.id]
+   
+   tags = {
       Name = "mcd-demo-teashop-be-to-tgw-and-igw-rt"
       Tier = "back-end"
       Application = var.application_name
@@ -238,13 +244,13 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_ssh_ipv4_frontend" {
   to_port           = 22
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_in_3306_ipv4_frontend" {
-  security_group_id = aws_security_group.frontend_sg.id
-  cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 3306
-  ip_protocol       = "tcp"
-  to_port           = 3306
-}
+#resource "aws_vpc_security_group_ingress_rule" "allow_in_3306_ipv4_frontend" {
+#  security_group_id = aws_security_group.frontend_sg.id
+#  cidr_ipv4         = "0.0.0.0/0"
+#  from_port         = 3306
+#  ip_protocol       = "tcp"
+#  to_port           = 3306
+#}
 resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_frontend" {
   security_group_id = aws_security_group.frontend_sg.id
   cidr_ipv4         = "0.0.0.0/0"
@@ -255,7 +261,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_frontend" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
    security_group_id = aws_security_group.frontend_sg.id
-   cidr_ipv4         = "10.1.0.0/16"
+   cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
    ip_protocol       = "icmp"
    from_port         = -1
    to_port           = -1
@@ -298,14 +304,14 @@ resource "aws_security_group" "backend_sg" {
 }
 resource "aws_vpc_security_group_ingress_rule" "allow_in_3306_ipv4_backend" {
   security_group_id = aws_security_group.backend_sg.id
-  cidr_ipv4         = "0.0.0.0/0"
+  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
   from_port         = 3306
   ip_protocol       = "tcp"
   to_port           = 3306
 }
 resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
   security_group_id = aws_security_group.backend_sg.id
-  cidr_ipv4         = var.public_subnet
+  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
   from_port         = 8080
   ip_protocol       = "tcp"
   to_port           = 8080
@@ -313,7 +319,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_backend" {
   security_group_id = aws_security_group.frontend_sg.id
-  cidr_ipv4         = "10.0.0.0/16"
+  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
   ip_protocol       = "icmp"
    from_port         = -1
    to_port           = -1

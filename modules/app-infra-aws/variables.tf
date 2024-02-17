@@ -34,6 +34,13 @@ variable "az2" {
   default     = "us-east-1b"
 }
 
+# AZ 3
+variable "az3" {
+  description = "availability zone c"
+  type        = string
+  default     = "us-east-1c"
+}
+
 # custom VPC variable
 variable "vpc_cidr" {
   description = "custom vpc CIDR notation"
@@ -60,16 +67,12 @@ variable "public_subnet" {
   default     = "10.0.1.0/24"
 }
 
-
-
 # private subnet 1 variable
 variable "private_subnet" {
-  description = "private subnet 2 CIDR notation"
+  description = "private subnet CIDR notation"
   type        = string
   default     = "10.1.2.0/24"
 }
-
-
 
 # ec2 instance ami for Linux
 variable "ec2_instance_ami" {
