@@ -150,7 +150,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
 # ---------------------------------------------
 # ROUTE TABLES - FRONTEND
 # creating route table for Front End - Allow 0/0 in as it needs to be provisioned by TF
-resource "aws_oute_table" "rt_fe" {
+resource "aws_route_table" "rt_fe" {
    vpc_id = aws_vpc.custom_vpc_fe.id
 
    route {
@@ -203,14 +203,14 @@ resource "aws_route_table" "rt_be" {
 # associate route table to the public subnet
 resource "aws_route_table_association" "public_rt" {
    subnet_id      = aws_subnet.public_subnet.id
-   route_table_id = aws_default_route_table.rt_fe.id
+   route_table_id = aws_route_table.rt_fe.id
 
 }
 
 # associate route table to the private subnet 1
 resource "aws_route_table_association" "private_rt" {
    subnet_id      = aws_subnet.private_subnet.id
-   route_table_id = aws_default_route_table.rt_be.id
+   route_table_id = aws_route_table.rt_be.id
 
 }
 
