@@ -321,7 +321,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
   to_port           = 8080
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
+resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_backend" {
   security_group_id = aws_security_group.frontend_sg.id
   cidr_ipv4         = "10.0.0.0/16"
   ip_protocol       = "icmp"
