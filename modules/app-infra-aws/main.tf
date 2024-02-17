@@ -102,50 +102,6 @@ resource "aws_internet_gateway" "igw_be" {
 
    }
 } 
-#----------------------------------------
-# TRANSIT GATEWAYS ACROSS FE AND BE VPCs
-resource "aws_ec2_transit_gateway" "fe-be-tgw" {
-  description                     = "Transit Gateway between FE and BE for app"
-  default_route_table_association = "enable"
-  default_route_table_propagation = "enable"
-
-  tags                           = {
-    Name                         = "mcd-demo-teashop-fe-be-tgw"
-    Application                  = var.application_name
-    Environment                  = var.environment
-  }
-}
-#----------------------------------------
-# TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
-   subnet_ids         = [aws_subnet.public_subnet.id]
-   transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-   vpc_id             = aws_vpc.custom_vpc_fe.id
-   transit_gateway_default_route_table_association = false
-   transit_gateway_default_route_table_propagation = false
-   tags               = {
-      Name             = "mcd-demo-tgw-att-vpc-fe"
-      Application   = var.application_name
-      Tier          = "front-end"
-  }
-  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
-}
-#----------------------------------------
-# TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
-  subnet_ids         = [aws_subnet.private_subnet.id]
-  transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-  vpc_id             = aws_vpc.custom_vpc_be.id
-  transit_gateway_default_route_table_association = false
-  transit_gateway_default_route_table_propagation = false
-  tags               = {
-      Name             = "mcd-demo-tgw-att-vpc-be"
-      Application   = var.application_name
-      Tier          = "back-end"
-  }
-  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
-}
-
 
 # ---------------------------------------------
 # ROUTE TABLES - FRONTEND
@@ -158,10 +114,7 @@ resource "aws_route_table" "rt_fe" {
       gateway_id = aws_internet_gateway.igw_fe.id
   }
 
-  route {
-      cidr_block = aws_vpc.custom_vpc_be.cidr_block
-      transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-  }
+
    tags = {
       Name = "mcd-demo-teashop-fe-to-tgw-and-igw-rt"
       Tier = "front-end"
@@ -479,6 +432,50 @@ resource "null_resource" "frontend-config"{
    }
 }
 
+
+#----------------------------------------
+# TRANSIT GATEWAYS ACROSS FE AND BE VPCs
+resource "aws_ec2_transit_gateway" "fe-be-tgw" {
+  description                     = "Transit Gateway between FE and BE for app"
+  default_route_table_association = "enable"
+  default_route_table_propagation = "enable"
+
+  tags                           = {
+    Name                         = "mcd-demo-teashop-fe-be-tgw"
+    Application                  = var.application_name
+    Environment                  = var.environment
+  }
+}
+#----------------------------------------
+# TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
+   subnet_ids         = [aws_subnet.public_subnet.id]
+   transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+   vpc_id             = aws_vpc.custom_vpc_fe.id
+   transit_gateway_default_route_table_association = false
+   transit_gateway_default_route_table_propagation = false
+   tags               = {
+      Name             = "mcd-demo-tgw-att-vpc-fe"
+      Application   = var.application_name
+      Tier          = "front-end"
+  }
+  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
+}
+#----------------------------------------
+# TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
+  subnet_ids         = [aws_subnet.private_subnet.id]
+  transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+  vpc_id             = aws_vpc.custom_vpc_be.id
+  transit_gateway_default_route_table_association = false
+  transit_gateway_default_route_table_propagation = false
+  tags               = {
+      Name             = "mcd-demo-tgw-att-vpc-be"
+      Application   = var.application_name
+      Tier          = "back-end"
+  }
+  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
+}
 
 
 
