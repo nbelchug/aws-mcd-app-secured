@@ -143,7 +143,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
     Application   = var.application_name
     Tier          = "back-end"
   }
-  depends_on = ["aws_ec2_transit_gateway.fe-be-tgw"]
+  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
 }
 
 # ---------------------------------------------
