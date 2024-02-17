@@ -157,13 +157,11 @@ resource "aws_route_table" "rt_fe" {
       cidr_block = "0.0.0.0/0"
       gateway_id = aws_internet_gateway.igw_fe.id
   }
-   route {
+
+  route {
       cidr_block = aws_vpc.custom_vpc_be.cidr_block
-      gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-   }
-
-   depends_on = [aws_ec2_transit_gateway.fe-be-tgw , aws_internet_gateway.igw_fe]
-
+      transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+  }
    tags = {
       Name = "mcd-demo-teashop-fe-to-tgw-and-igw-rt"
       Tier = "front-end"
@@ -181,13 +179,7 @@ resource "aws_route_table" "rt_be" {
       cidr_block = "0.0.0.0/0"
       gateway_id = aws_internet_gateway.igw_be.id
   }
-   route {
-      cidr_block = aws_vpc.custom_vpc_fe.cidr_block
-      gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-
-   }
-
-   depends_on = [aws_ec2_transit_gateway.fe-be-tgw,aws_internet_gateway.igw_be]
+ 
    
    tags = {
       Name = "mcd-demo-teashop-be-to-tgw-and-igw-rt"
@@ -213,6 +205,7 @@ resource "aws_route_table_association" "private_rt" {
    route_table_id = aws_route_table.rt_be.id
 
 }
+
 
 
 
