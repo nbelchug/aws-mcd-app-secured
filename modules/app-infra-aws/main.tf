@@ -150,9 +150,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
 # ---------------------------------------------
 # ROUTE TABLES - FRONTEND
 # creating route table for Front End - Allow 0/0 in as it needs to be provisioned by TF
-resource "aws_default_route_table" "rt_fe" {
-   default_route_table_id = aws_vpc.custom_vpc_fe.default_route_table_id
-   #vpc_id = aws_vpc.custom_vpc_fe.id
+resource "aws_oute_table" "rt_fe" {
+   vpc_id = aws_vpc.custom_vpc_fe.id
 
    route {
       cidr_block = "0.0.0.0/0"
@@ -176,9 +175,8 @@ resource "aws_default_route_table" "rt_fe" {
 # ---------------------------------------------------
 # ROUTE TABLES - BACKEND
 # creating route table for Back End - Allow 0/0 in as it needs to be provisioned by TF
-resource "aws_default_route_table" "rt_be" {
-   default_route_table_id = aws_vpc.custom_vpc_be.default_route_table_id
-   #vpc_id = aws_vpc.custom_vpc_be.id
+resource "aws_route_table" "rt_be" {
+   vpc_id = aws_vpc.custom_vpc_be.id
    route {
       cidr_block = "0.0.0.0/0"
       gateway_id = aws_internet_gateway.igw_be.id
@@ -263,7 +261,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_frontend" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
    security_group_id = aws_security_group.frontend_sg.id
-   cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
+  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
    ip_protocol       = "icmp"
    from_port         = -1
    to_port           = -1
@@ -321,7 +319,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_backend" {
   security_group_id = aws_security_group.frontend_sg.id
-  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
+  cidr_ipv4         = aws_vpc.custom_vpc_be.cidr_block
   ip_protocol       = "icmp"
    from_port         = -1
    to_port           = -1
@@ -406,10 +404,7 @@ resource "null_resource" "backend-config"{
    }
 }
 
-
-
-
-
+#----------------------------------------------------------------------------------
 # INSTANCES BLOCK - EC2 and DATABASE
 resource "aws_instance" "ec2_frontend" {
    ami                     = var.ec2_instance_ami
