@@ -168,26 +168,14 @@ resource "aws_route_table" "rt_be" {
 resource "aws_route_table_association" "public_rt" {
    subnet_id      = aws_subnet.public_subnet.id
    route_table_id = aws_route_table.rt_fe.id
-     tags = {
-      Name = "mcd-demo-teashop-be-to-igw-rt-assoc-fe"
-      Tier = "front-end"
-      Application = var.application_name
-      Environment = var.environment
 
-  }
 }
 
 # associate route table to the private subnet 1
 resource "aws_route_table_association" "private_rt" {
    subnet_id      = aws_subnet.private_subnet.id
    route_table_id = aws_route_table.rt_be.id
-     tags = {
-      Name = "mcd-demo-teashop-be-to-igw-rt-assoc-be"
-      Tier = "back-end"
-      Application = var.application_name
-      Environment = var.environment
 
-  }
 }
 
 
