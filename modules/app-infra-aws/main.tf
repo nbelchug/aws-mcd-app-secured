@@ -163,7 +163,7 @@ resource "aws_default_route_table" "rt_fe" {
       gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
    }
 
-   depends_on = [aws_ec2_transit_gateway.fe-be-tgw aws_internet_gateway.igw_fe]
+   depends_on = [aws_ec2_transit_gateway.fe-be-tgw , aws_internet_gateway.igw_fe]
 
    tags = {
       Name = "mcd-demo-teashop-fe-to-tgw-and-igw-rt"
