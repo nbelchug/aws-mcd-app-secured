@@ -126,9 +126,13 @@ resource "aws_route_table" "rt_fe" {
       cidr_block = "0.0.0.0/0"
       gateway_id = aws_internet_gateway.igw_fe.id
   }
+   route {
+      cidr_block = aws_vpc.custom_vpc_be.cidr_block
+      gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+   }
 
   tags = {
-      Name = "mcd-demo-teashop-fe-to-igw-rt"
+      Name = "mcd-demo-teashop-fe-to-tgw-and-igw-rt"
       Tier = "front-end"
       Application = var.application_name
       Environment = var.environment
@@ -136,7 +140,7 @@ resource "aws_route_table" "rt_fe" {
   }
 }
 # ---------------------------------------------------
-# ROUTE TABLES - FRONTEND
+# ROUTE TABLES - BACKEND
 # creating route table for Back End - Allow 0/0 in as it needs to be provisioned by TF
 resource "aws_route_table" "rt_be" {
    vpc_id = aws_vpc.custom_vpc_be.id
@@ -145,8 +149,12 @@ resource "aws_route_table" "rt_be" {
       gateway_id = aws_internet_gateway.igw_be.id
   }
 
+   route {
+      cidr_block = aws_vpc.custom_vpc_fe.cidr_block
+      gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+   }
   tags = {
-      Name = "mcd-demo-teashop-be-to-igw-rt"
+      Name = "mcd-demo-teashop-be-to-tgw-and-igw-rt"
       Tier = "back-end"
       Application = var.application_name
       Environment = var.environment
@@ -160,13 +168,26 @@ resource "aws_route_table" "rt_be" {
 resource "aws_route_table_association" "public_rt" {
    subnet_id      = aws_subnet.public_subnet.id
    route_table_id = aws_route_table.rt_fe.id
+     tags = {
+      Name = "mcd-demo-teashop-be-to-igw-rt-assoc-fe"
+      Tier = "front-end"
+      Application = var.application_name
+      Environment = var.environment
+
+  }
 }
 
 # associate route table to the private subnet 1
 resource "aws_route_table_association" "private_rt" {
    subnet_id      = aws_subnet.private_subnet.id
    route_table_id = aws_route_table.rt_be.id
+     tags = {
+      Name = "mcd-demo-teashop-be-to-igw-rt-assoc-be"
+      Tier = "back-end"
+      Application = var.application_name
+      Environment = var.environment
 
+  }
 }
 
 
@@ -200,7 +221,6 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
   }
   depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
 }
-
 
 
 # ----------------------------------------------------
@@ -243,6 +263,12 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_frontend" {
   from_port         = 8080
   ip_protocol       = "tcp"
   to_port           = 8080
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
+  security_group_id = aws_security_group.frontend_sg.id
+  cidr_ipv4         = "10.1.0.0/16"
+  ip_protocol       = "icmp"
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_out_all_traffic_ipv4_frontend" {
@@ -295,6 +321,11 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
   to_port           = 8080
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
+  security_group_id = aws_security_group.frontend_sg.id
+  cidr_ipv4         = "10.0.0.0/16"
+  ip_protocol       = "icmp"
+}
 resource "aws_vpc_security_group_egress_rule" "allow_out_all_traffic_ipv4_backend" {
   security_group_id = aws_security_group.backend_sg.id
   cidr_ipv4         = "0.0.0.0/0"
