@@ -38,6 +38,7 @@ output "backend-nodes-public" {
 }
 
 
+
 #output userdata {
 #  value = "\n${data.template_file.cloud-init-frontent.yaml.rendered}"
 #}

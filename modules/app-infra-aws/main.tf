@@ -108,6 +108,7 @@ resource "aws_ec2_transit_gateway" "fe-be-tgw" {
   description                     = "Transit Gateway between FE and BE for app"
   default_route_table_association = "enable"
   default_route_table_propagation = "enable"
+
   tags                           = {
     Name                         = "mcd-demo-teashop-fe-be-tgw"
     Application                  = var.application_name
@@ -115,36 +116,6 @@ resource "aws_ec2_transit_gateway" "fe-be-tgw" {
   }
 }
 
-#----------------------------------------
-# TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
-   subnet_ids         = ["${aws_subnet.public_subnet.id}"]
-   transit_gateway_id = "${aws_ec2_transit_gateway.fe-be-tgw.id}"
-   vpc_id             = "${aws_vpc.custom_vpc_fe.id}"
-   transit_gateway_default_route_table_association = false
-   transit_gateway_default_route_table_propagation = false
-   tags               = {
-      Name             = "tgw-att-vpc-fe"
-      Application   = var.application_name
-      Tier          = "front-end"
-  }
-  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
-}
-#----------------------------------------
-# TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
-  subnet_ids         = ["${aws_subnet.private_subnet.id}"]
-  transit_gateway_id = "${aws_ec2_transit_gateway.fe-be-tgw.id}"
-  vpc_id             = "${aws_vpc.custom_vpc_be.id}"
-  transit_gateway_default_route_table_association = false
-  transit_gateway_default_route_table_propagation = false
-  tags               = {
-      Name             = "tgw-att-vpc-be"
-      Application   = var.application_name
-      Tier          = "back-end"
-  }
-  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
-}
 
 # ---------------------------------------------
 # ROUTE TABLES
@@ -197,6 +168,40 @@ resource "aws_route_table_association" "private_rt" {
    route_table_id = aws_route_table.rt_be.id
 
 }
+
+
+#----------------------------------------
+# TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
+   subnet_ids         = [aws_subnet.public_subnet.id]
+   transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+   vpc_id             = aws_vpc.custom_vpc_fe.id
+   transit_gateway_default_route_table_association = false
+   transit_gateway_default_route_table_propagation = false
+   tags               = {
+      Name             = "mcd-demo-tgw-att-vpc-fe"
+      Application   = var.application_name
+      Tier          = "front-end"
+  }
+  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
+}
+#----------------------------------------
+# TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
+  subnet_ids         = aws_subnet.private_subnet.id
+  transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
+  vpc_id             = aws_vpc.custom_vpc_be.id
+  transit_gateway_default_route_table_association = false
+  transit_gateway_default_route_table_propagation = false
+  tags               = {
+      Name             = "mcd-demo-tgw-att-vpc-be"
+      Application   = var.application_name
+      Tier          = "back-end"
+  }
+  depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
+}
+
+
 
 # ----------------------------------------------------
 # SECURITY GROUPS
@@ -262,11 +267,11 @@ resource "aws_security_group" "backend_sg" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_in_any_ipv4_backend" {
-  security_group_id = aws_security_group.backend_sg.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = -1
-}
+#resource "aws_vpc_security_group_ingress_rule" "allow_in_any_ipv4_backend" {
+#  security_group_id = aws_security_group.backend_sg.id
+#  cidr_ipv4         = "0.0.0.0/0"
+#  ip_protocol       = -1
+#}
 
  resource "aws_vpc_security_group_ingress_rule" "allow_in_ssh_ipv4_backend" {
   security_group_id = aws_security_group.backend_sg.id
