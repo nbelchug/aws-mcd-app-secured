@@ -205,14 +205,14 @@ resource "aws_default_route_table" "rt_be" {
 # associate route table to the public subnet
 resource "aws_route_table_association" "public_rt" {
    subnet_id      = aws_subnet.public_subnet.id
-   route_table_id = aws_route_table.rt_fe.id
+   route_table_id = aws_default_route_table.rt_fe.id
 
 }
 
 # associate route table to the private subnet 1
 resource "aws_route_table_association" "private_rt" {
    subnet_id      = aws_subnet.private_subnet.id
-   route_table_id = aws_route_table.rt_be.id
+   route_table_id = aws_default_route_table.rt_be.id
 
 }
 
