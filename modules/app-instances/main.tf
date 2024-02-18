@@ -33,7 +33,6 @@ terraform {
 
 
 
-module "aws_app_instances" {
       #-----------------------------------------------------------------
       # INSTANCES OF EC2 VIRTUAL MACHINES - BACKEND FIRST
       # 1st ec2 instance on private subnet 1 - REGISTRY & DB
@@ -195,4 +194,3 @@ module "aws_app_instances" {
 
          }
       }
-}
