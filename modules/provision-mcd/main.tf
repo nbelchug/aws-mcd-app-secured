@@ -11,18 +11,6 @@ terraform {
    }
 }
 
-resource "ciscomcd_cloud_account" "aws1" {
-  name                     = "aws-account1"
-  description              = "AWS Account - 123456789012"
-  csp_type                 = "AWS"
-  aws_credentials_type     = "AWS_IAM_ROLE"
-  aws_iam_role             = "arn:aws:iam::${var.csp_account_name}:role/ciscomcd-controller-role"
-  aws_account_number       = var.csp_account_name
-  aws_iam_role_external_id = var.external_id
-  aws_inventory_iam_role   = "arn:aws:iam::${var.csp_account_name}:role/ciscomcd-inventory-role"
-}
-
-
 
 resource "ciscomcd_service_vpc" "aws_service_vpc" {
   name               = "aws-service-vpc"
