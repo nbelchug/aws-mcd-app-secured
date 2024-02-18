@@ -350,29 +350,26 @@ resource "null_resource" "backend-config"{
    }
 
    provisioner "file" {
-    content     = self.triggers.configfile
-    destination = "/tmp/backend.sh"
-   }
-   provisioner "remote-exec" {
-      inline = ["sudo chmod 770 /tmp/backend.sh",
-               "sudo reboot",]
+      connection {
+         type        = "ssh"
+         user        = "ubuntu"
+         private_key = "${file("~/.ssh/${var.keyname}.pem")}"
+         host        = aws_instance.ec2_backend.public_ip
 
-   }
-   connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = "${file("~/.ssh/${var.keyname}.pem")}"
-      host        = aws_instance.ec2_backend.public_ip
+      }
+      content     = self.triggers.configfile
+         destination = "/tmp/backend.sh"
+      }
+      provisioner "remote-exec" {
+         inline = ["sudo chmod 770 /tmp/backend.sh",
+                  "sudo reboot",]
 
-   }
+      }
+
   
 }
 
 resource "null_resource" "run_containers_on_backend"{
- provisioner "remote-exec" {
-      inline = ["sleep 90", 
-               "/tmp/backend.sh",]
-
    connection {
       type        = "ssh"
       user        = "ubuntu"
@@ -380,6 +377,11 @@ resource "null_resource" "run_containers_on_backend"{
       host        = aws_instance.ec2_backend.public_ip
 
       }
+   provisioner "remote-exec"{
+                inline = ["echo 'connected!'"]
+   }
+   provisioner "remote-exec" {
+      inline = [ "/tmp/backend.sh",]
    }
 }
 
