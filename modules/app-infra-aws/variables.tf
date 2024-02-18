@@ -13,9 +13,9 @@ variable "environment" {
 	default= "development"
 }
 
-variable "skip-tgw"{
-  type = number
-  default = 1
+variable "skip_tgw"{
+  type = bool
+  default = true
 }
 
 

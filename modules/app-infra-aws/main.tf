@@ -459,6 +459,7 @@ resource "null_resource" "frontend-config"{
 #----------------------------------------
 # TRANSIT GATEWAYS ACROSS FE AND BE VPCs
 resource "aws_ec2_transit_gateway" "fe-be-tgw" {
+   count = (var.skip_tgw == false ? 1 : 0)
   description                     = "Transit Gateway between FE and BE for app"
   default_route_table_association = "enable"
   default_route_table_propagation = "enable"
@@ -472,6 +473,7 @@ resource "aws_ec2_transit_gateway" "fe-be-tgw" {
 #----------------------------------------
 # TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
+   count = (var.skip_tgw == false ? 1 : 0)
    subnet_ids         = [aws_subnet.public_subnet.id]
    transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
    vpc_id             = aws_vpc.custom_vpc_fe.id
@@ -487,6 +489,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
 #----------------------------------------
 # TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
+   count = (var.skip_tgw == false ? 1 : 0)
   subnet_ids         = [aws_subnet.private_subnet.id]
   transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
   vpc_id             = aws_vpc.custom_vpc_be.id
