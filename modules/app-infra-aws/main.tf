@@ -205,7 +205,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_frontend" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
    security_group_id = aws_security_group.frontend_sg.id
-  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
+  cidr_ipv4         = aws_vpc.custom_vpc_be.cidr_block
    ip_protocol       = "icmp"
    from_port         = -1
    to_port           = -1
@@ -261,9 +261,10 @@ resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
   to_port           = 8080
 }
 
+
 resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_backend" {
-  security_group_id = aws_security_group.frontend_sg.id
-  cidr_ipv4         = aws_vpc.custom_vpc_be.cidr_block
+  security_group_id = aws_security_group.backend_sg.id
+  cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
   ip_protocol       = "icmp"
    from_port         = -1
    to_port           = -1
