@@ -13,6 +13,11 @@ variable "environment" {
 	default= "development"
 }
 
+variable "skip-tgw"{
+  type = number
+  default = 1
+}
+
 
 variable "keyname"{
   description = "name of RSA Key to use to connect Terraform to EC2 instances"
