@@ -24,8 +24,8 @@ output "app-private-subnet-id"{
 }
 
 output "app_fe_vpc_cidr_block"{
-    value aws_vpc.custom_vpc_fe.cidr_block
+    value = aws_vpc.custom_vpc_fe.cidr_block
 }
 output "app_be_vpc_cidr_block"{
-    value aws_vpc.custom_vpc_be.cidr_block
+    value = aws_vpc.custom_vpc_be.cidr_block
 }
