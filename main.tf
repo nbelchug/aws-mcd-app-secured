@@ -35,9 +35,19 @@ provider "aws" {
 #}
 
 
-module "app-infra-aws" {
-  source = "./modules/app-infra-aws"
+module "app-vpcs" {
+  source = "./modules/app-vpcs"
 }
+
+module "app-secgroups" {
+  source = "./modules/app-secgroups"
+}
+
+module "app-instances" {
+  source = "./modules/app-instances"
+}
+
+
 
 #module "cost-calc"{
 #  source = "./modules/cost-calc"
