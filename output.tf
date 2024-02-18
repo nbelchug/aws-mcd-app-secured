@@ -1,43 +1,52 @@
 
-output "app_vpcs_to_manage" {
-    value = module.app-infra-aws.app-vpcs
-}
-
-output "fe-nodes" {
-    value = module.app-infra-aws.frontend-nodes
-
-}
-
-output "be-nodes" {
-    value = module.app-infra-aws.backend-nodes
-
-}
-
-output "fe-nodes-public" {
-    value = module.app-infra-aws.frontend-nodes-public
-}
-
-output "be-nodes-public" {
-    value = module.app-infra-aws.backend-nodes-public
-
-}
-
-output "fe-nodes-id" {
-    value = module.app-infra-aws.frontend-nodes-id
-
-}
-
-output "be-nodes-id" {
-    value = module.app-infra-aws.backend-nodes-id
-}
-
 output "application-name"{
-    value = module.app-infra-aws.application-name
+    description = "name of the application"
+    value = var.application_name
+}
 
+output "environment"{
+    description = "Dev Val Prod"
+    value = var.environment
 }
-output "application-environment" {
-    value =module.app-infra-aws.environment 
+
+output "app-vpcs"{
+    description = "id of app vpcs"
+    value = [aws_vpc.custom_vpc_fe.id, aws_vpc.custom_vpc_be.id]
 }
-output "app-tgw-id" {
-    value= module.app-infra-aws.transit-gateway-id
+
+output "frontend-nodes-id" {
+    description = "list of front end nodes private IP addresses"
+    value = aws_instance.ec2_frontend.id
 }
+output "backend-nodes-id" {
+    description = "list of back end nodes private IP addresses"
+    value = aws_instance.ec2_backend.id
+} 
+
+output "frontend-nodes" {
+    description = "list of front end nodes private IP addresses"
+    value = aws_instance.ec2_frontend.private_ip
+}
+output "backend-nodes" {
+    description = "list of back end nodes private IP addresses"
+    value = aws_instance.ec2_backend.private_ip
+}
+
+output "frontend-nodes-public" {
+    description = "list of front end nodes private IP addresses"
+    value = aws_instance.ec2_frontend.public_ip
+}
+output "backend-nodes-public" {
+    description = "list of back end nodes private IP addresses"
+    value = aws_instance.ec2_backend.public_ip
+}
+
+output "transit-gateway-id"{
+    description = "id of the tgw of the application in use "
+    value = aws_ec2_transit_gateway.fe-be-tgw.id
+}
+
+
+#output userdata {
+#  value = "\n${data.template_file.cloud-init-frontent.yaml.rendered}"
+#}
