@@ -37,6 +37,15 @@ provider "aws" {
 
 module "application_vpcs" {
   source = "./modules/app-vpcs"
+
+  app_vpcs_list = [aws_vpc.custom_vpc_fe.id, aws_vpc.custom_vpc_be.id]
+  app_fe_vpc_id= aws_vpc.custom_vpc_fe.id
+  app_be_vpc_id=aws_vpc.custom_vpc_be.id
+  app_public_subnet_id= aws_vpc.public_subnet.id
+  pp_private_subnet_id= aws_vpc.private_subnet.id
+  app_fe_vpc_cidr_block= aws_vpc.custom_vpc_fe.cidr_block
+  app_be_vpc_cidr_block = aws_vpc.custom_vpc_be.cidr_block
+
 }
 
 module "application_security_groups"{
