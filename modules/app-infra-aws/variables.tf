@@ -78,7 +78,8 @@ variable "private_subnet" {
 variable "ec2_instance_ami" {
   description = "ec2 instance ami id"
   type        = string
-  default     = "ami-0e731c8a588258d0d"
+  #default     = "ami-0e731c8a588258d0d"
+  default =     "ami-0c7217cdde317cfec"
 
 
 }
