@@ -9,7 +9,7 @@ output "environment"{
     value = var.environment
 }
 
-output "app-vpcs"{
+output "app_vpcs"{
     description = "id of app vpcs"
     value = module.app-vpcs.app_vpcs
 }
