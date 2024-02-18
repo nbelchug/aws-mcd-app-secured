@@ -11,21 +11,20 @@ packages:
   - software-properties-common
 
 groups:
-  - docker
+  - docker, sudo
 
 users:
-  - default
-  # the docker service account
-  - name: docker-service
-    groups: docker
+ - name: ubuntu
+ - groups: docker, admin, sudo
 
 system_info:
   default_user:
-    groups: [docker, admin]
+    groups: [docker, sudo, admin]
     name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
 
 runcmd:
+  - sudo usermod -aG sudo $USER
   - sudo usermod -aG docker $USER
   - sudo id $USER
   - sudo hostnamectl set-hostname BACKEND-TEASTORE 
