@@ -14,6 +14,8 @@
 # VPC BLOCK
 # creating VPC
 
+
+
 resource "aws_vpc" "custom_vpc_fe" {
    cidr_block       = var.vpc_cidr_frontend
 

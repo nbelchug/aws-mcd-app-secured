@@ -32,7 +32,7 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
 resource "ciscomcd_spoke_vpc" "ciscomcd_spoke" {
   count = module.app-infra-aws.app-vpcs.length
   service_vpc_id = ciscomcd_service_vpc.aws_service_vpc.id
-  spoke_vpc_id   = module.app-infra-aws.app-vpcs[count.index]
+  spoke_vpc_id   = module.app-infra-aws.app-vpcs[count.index].id
 }
 
 
