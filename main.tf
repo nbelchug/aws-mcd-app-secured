@@ -39,10 +39,10 @@ module "app-infra-aws" {
   source = "./modules/app-infra-aws"
 }
 
-module "pricing_example_pricing-terraform-state-and-plan" {
-  source  = "terraform-aws-modules/pricing/aws//examples/pricing-terraform-state-and-plan"
-  version = "2.0.2"
+module "cost-calc"{
+  source = "./modules/cost-calc"
 }
+
 #module "provision-mcd" {
 #  source = "./modules/provision-mcd"
 #}
