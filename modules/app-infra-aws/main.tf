@@ -350,13 +350,7 @@ resource "null_resource" "backend-config"{
    }
 
    provisioner "file" {
-      connection {
-         type        = "ssh"
-         user        = "ubuntu"
-         private_key = "${file("~/.ssh/${var.keyname}.pem")}"
-         host        = aws_instance.ec2_backend.public_ip
 
-      }
       content     = self.triggers.configfile
          destination = "/tmp/backend.sh"
       }
@@ -365,7 +359,13 @@ resource "null_resource" "backend-config"{
                   "sudo reboot",]
 
       }
+      connection {
+         type        = "ssh"
+         user        = "ubuntu"
+         private_key = "${file("~/.ssh/${var.keyname}.pem")}"
+         host        = aws_instance.ec2_backend.public_ip
 
+      }
   
 }
 
@@ -381,7 +381,7 @@ resource "null_resource" "run_containers_on_backend"{
                 inline = ["echo 'connected!'"]
    }
    provisioner "remote-exec" {
-      inline = [ "/tmp/backend.sh",]
+      inline = [ "sudo /tmp/backend.sh",]
    }
 }
 

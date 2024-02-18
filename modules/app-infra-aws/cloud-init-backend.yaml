@@ -21,7 +21,7 @@ users:
 
 system_info:
   default_user:
-    groups: [docker]
+    groups: [docker, admin]
     name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
 
