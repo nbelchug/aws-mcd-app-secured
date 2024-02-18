@@ -23,3 +23,4 @@ runcmd:
   - sudo hostnamectl set-hostname BACKEND-TEASTORE 
   #- cd /tmp && git clone https://github.com/jpianigiani-cisco/aws-mcd-app.git 
 #  - sudo docker-compose -f /webapp-aws-mcd/modules/app-infra-aws/scripts/docker-compose_default_backend.yaml up -d 
+  - sudo (sleep 5 && reboot)&

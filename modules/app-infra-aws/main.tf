@@ -356,7 +356,7 @@ resource "null_resource" "backend-config"{
       inline = ["sudo chmod 770 /tmp/backend.sh",
                "/tmp/backend.sh",]
 
-   }
+    }
    connection {
       type        = "ssh"
       user        = "ubuntu"
@@ -373,7 +373,7 @@ resource "aws_instance" "ec2_frontend" {
    instance_type           = var.ec2_instance_type
    availability_zone       = var.az1
    subnet_id               = aws_subnet.public_subnet.id
-   key_name                = "terraform-key-devops-admin"
+   key_name                = var.keyname
 
    private_dns_name_options {
     hostname_type = "resource-name"
