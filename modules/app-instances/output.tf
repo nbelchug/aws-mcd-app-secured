@@ -1,19 +1,4 @@
 
-output "application-name"{
-    description = "name of the application"
-    value = var.application_name
-}
-
-output "environment"{
-    description = "Dev Val Prod"
-    value = var.environment
-}
-
-output "app-vpcs"{
-    description = "id of app vpcs"
-    value = module.app-vpcs
-}
-
 output "frontend-nodes-id" {
     description = "list of front end nodes private IP addresses"
     value = aws_instance.ec2_frontend.id
@@ -40,13 +25,3 @@ output "backend-nodes-public" {
     description = "list of back end nodes private IP addresses"
     value = aws_instance.ec2_backend.public_ip
 }
-
-output "transit-gateway-id"{
-    description = "id of the tgw of the application in use "
-    value = aws_ec2_transit_gateway.fe-be-tgw.id
-}
-
-
-#output userdata {
-#  value = "\n${data.template_file.cloud-init-frontent.yaml.rendered}"
-#}
