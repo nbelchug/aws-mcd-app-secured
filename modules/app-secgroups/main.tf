@@ -37,7 +37,7 @@ terraform {
       resource "aws_security_group" "frontend_sg" {
       name        = "frontend_sg"
       description = "Allow SSH 8080 inbound traffic and all outbound traffic, allow 3306 and 8080 to backend"
-      vpc_id      = aws_vpc.custom_vpc_fe.id
+      vpc_id      = module.app-vpcs.app_be_vpc_id 
 
       tags = {
          Name = "mcd-demo-teashop-frontend-sg"
@@ -75,7 +75,7 @@ terraform {
 
       resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
          security_group_id = aws_security_group.frontend_sg.id
-      cidr_ipv4         = aws_vpc.custom_vpc_be.cidr_block
+         cidr_ipv4         = module.app-vpcs.app_fe_vpc_cidr_block
          ip_protocol       = "icmp"
          from_port         = -1
          to_port           = -1
@@ -92,7 +92,7 @@ terraform {
       resource "aws_security_group" "backend_sg" {
       name        = "backend_sg"
       description = "Allow  SSH DB 8080 inbound traffic and outbound to public subnet"
-      vpc_id      = aws_vpc.custom_vpc_be.id
+      vpc_id      = module.app-vpcs.app_fe_vpc_id
 
       tags = {
          Name = "mcd-demo-teashop-backend-sg"

@@ -22,11 +22,11 @@ output "be_vpc"{
 }
 
 output "public-subnet"{
-    value = module.app-vpcs.public_subnet.id
+    value = module.app-vpcs.app-public-subnet-id
 }
 
 output "private-subnet"{
-    value = module.app-vpcs.private_subnet.id
+    value = module.app-vpcs.app-private-subnet-id
 }
 
 output "frontend-nodes-id" {
