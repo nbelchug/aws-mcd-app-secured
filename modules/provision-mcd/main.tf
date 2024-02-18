@@ -1,6 +1,16 @@
 # fe_nodes = module.app-infra-aws.fe-fe_nodes.value
 # be_nodes =module.app-infra-aws.fe-be_nodes.value 
 
+terraform {
+   required_providers {
+
+    ciscomcd = {
+      source = "CiscoDevNet/ciscomcd"
+      version = "0.2.4"
+    }
+   }
+}
+
 resource "ciscomcd_cloud_account" "aws1" {
   name                     = "aws-account1"
   description              = "AWS Account - 123456789012"
