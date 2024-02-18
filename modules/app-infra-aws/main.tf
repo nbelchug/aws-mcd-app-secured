@@ -478,6 +478,15 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
 
 
 
-
+resource "aws_cur_report_definition" "application_cur_report_definition" {
+  report_name                = "teashop-cur-report-definition"
+  time_unit                  = "DAILY"
+  format                     = "textORcsv"
+  compression                = "GZIP"
+  additional_schema_elements = ["RESOURCES", "SPLIT_COST_ALLOCATION_DATA"]
+  s3_bucket                  = "example-bucket-name"
+  s3_region                  = "us-east-1"
+  additional_artifacts       = ["REDSHIFT", "QUICKSIGHT"]
+}
 
 #
