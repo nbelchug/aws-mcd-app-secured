@@ -48,6 +48,11 @@ module "app-instances" {
 }
 
 
+module "app-tgw" {
+  source = "./modules/app-tgw"
+}
+
+
 
 #module "cost-calc"{
 #  source = "./modules/cost-calc"

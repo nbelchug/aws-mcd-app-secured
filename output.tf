@@ -25,7 +25,7 @@ output "backend-nodes-id" {
 
 output "frontend-nodes-private-ips" {
     description = "list of front end nodes private IP addresses"
-    value = odule.app-instances.frontend-nodes-private-ips
+    value = module.app-instances.frontend-nodes-private-ips
 }
 output "backend-nodes-private-ips" {
     description = "list of back end nodes private IP addresses"

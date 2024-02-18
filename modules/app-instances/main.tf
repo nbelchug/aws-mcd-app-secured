@@ -40,11 +40,11 @@ terraform {
          ami                     = var.ec2_instance_ami
          instance_type           = var.ec2_instance_type
          availability_zone       = var.az1
-         subnet_id               = aws_subnet.private_subnet.id
+         subnet_id               = module.app-vpcs.app-private-subnet-id 
          key_name                = var.keyname
          associate_public_ip_address = true
 
-         vpc_security_group_ids  = [aws_security_group.backend_sg.id]
+         vpc_security_group_ids  = [module.app-secgroups.frontend_sg]
          root_block_device {
             volume_size = 30 # in GB 
             volume_type = "gp3"
@@ -119,7 +119,7 @@ terraform {
          ami                     = var.ec2_instance_ami
          instance_type           = var.ec2_instance_type
          availability_zone       = var.az1
-         subnet_id               = aws_subnet.public_subnet.id
+         subnet_id               = module.app-vpcs.app-public-subnet-id  
          key_name                = var.keyname
 
          private_dns_name_options {
@@ -127,7 +127,7 @@ terraform {
          }
 
          associate_public_ip_address = true
-         vpc_security_group_ids  = [aws_security_group.frontend_sg.id]
+         vpc_security_group_ids  = [module.app-secgroups.frontend_sg]
          root_block_device {
             volume_size = 30 # in GB 
             volume_type = "gp3"
