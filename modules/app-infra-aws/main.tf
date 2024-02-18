@@ -370,7 +370,8 @@ resource "null_resource" "backend-config"{
 
 resource "null_resource" "run_containers_on_backend"{
  provisioner "remote-exec" {
-      inline = ["/tmp/backend.sh",]
+      inline = ["sleep 90", 
+               "/tmp/backend.sh",]
 
    connection {
       type        = "ssh"
