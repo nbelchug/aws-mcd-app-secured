@@ -43,6 +43,6 @@ module "app-infra-aws" {
 #  source = "./modules/cost-calc"
 #}
 
-module "provision-mcd" {
-  source = "./modules/provision-mcd"
-}
+#module "provision-mcd" {
+#  source = "./modules/provision-mcd"
+#}
