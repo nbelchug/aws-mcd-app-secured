@@ -359,8 +359,8 @@ resource "null_resource" "backend-config"{
    }
    connection {
       type        = "ssh"
-      user        = "ec2-user"
-      private_key = "${file("~/.ssh/terraform-key-devops-admin.pem")}"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/${keyname}.pem")}"
       host        = aws_instance.ec2_backend.public_ip
 
    }
@@ -441,8 +441,8 @@ resource "null_resource" "frontend-config"{
 
    connection {
       type        = "ssh"
-      user        = "ec2-user"
-      private_key = "${file("~/.ssh/terraform-key-devops-admin.pem")}"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/${keyname}.pem")}"
       host        = aws_instance.ec2_frontend.public_ip
 
    }

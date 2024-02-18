@@ -10,6 +10,7 @@ packages:
 
 groups:
   - docker
+
 system_info:
   default_user:
     groups: [docker]
@@ -21,7 +22,6 @@ final_message: "The system is finally up, after $UPTIME seconds"
 
 runcmd:
   - sudo newgrp docker
-
   - sudo usermod -a -G docker ubuntu
   - sudo systemctl enable docker.service
   - sudo systemctl start docker.service
