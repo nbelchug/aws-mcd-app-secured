@@ -17,7 +17,7 @@ variable "environment" {
 variable "keyname"{
   description = "name of RSA Key to use to connect Terraform to EC2 instances"
   type = string
-  default = "terraform-key-devops-admin-ubuntu.pem"
+  default = "terraform-key-devops-admin-ubuntu"
 }
 
 variable "tags" {
