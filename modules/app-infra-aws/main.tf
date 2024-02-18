@@ -161,8 +161,6 @@ resource "aws_route_table_association" "private_rt" {
 
 
 
-
-
 # ----------------------------------------------------
 # SECURITY GROUPS
 # FRONTEND SECURITY GROUP - allow SSH, Allow HTTPS HTTP and PORT 8080 as well backend
@@ -452,8 +450,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
    subnet_ids         = [aws_subnet.public_subnet.id]
    transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
    vpc_id             = aws_vpc.custom_vpc_fe.id
-   transit_gateway_default_route_table_association = false
-   transit_gateway_default_route_table_propagation = false
+   transit_gateway_default_route_table_association = true
+   transit_gateway_default_route_table_propagation = true
    tags               = {
       Name             = "mcd-demo-tgw-att-vpc-fe"
       Application   = var.application_name
@@ -467,8 +465,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
   subnet_ids         = [aws_subnet.private_subnet.id]
   transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
   vpc_id             = aws_vpc.custom_vpc_be.id
-  transit_gateway_default_route_table_association = false
-  transit_gateway_default_route_table_propagation = false
+  transit_gateway_default_route_table_association = true
+  transit_gateway_default_route_table_propagation = true
   tags               = {
       Name             = "mcd-demo-tgw-att-vpc-be"
       Application   = var.application_name
