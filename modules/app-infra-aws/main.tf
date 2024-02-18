@@ -26,6 +26,7 @@ terraform {
       version = "0.2.4"
     }
 
+
   }
   required_version = "~> 1.3"
 }
@@ -340,6 +341,7 @@ resource "aws_instance" "ec2_backend" {
    #}
 }
 
+
 resource "null_resource" "backend-config"{ 
    triggers = {
       configfile = templatefile (   "${path.module}/backend.sh" , 
@@ -351,18 +353,33 @@ resource "null_resource" "backend-config"{
     content     = self.triggers.configfile
     destination = "/tmp/backend.sh"
    }
-
    provisioner "remote-exec" {
       inline = ["sudo chmod 770 /tmp/backend.sh",
-               "/tmp/backend.sh",]
+               "sudo reboot",]
 
-    }
+   }
    connection {
       type        = "ssh"
       user        = "ubuntu"
       private_key = "${file("~/.ssh/${var.keyname}.pem")}"
       host        = aws_instance.ec2_backend.public_ip
 
+   }
+  
+}
+
+resource "null_resource" "run_containers_on_backend"{
+ provisioner "remote-exec" {
+      inline = ["/tmp/backend.sh",]
+
+   connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/${var.keyname}.pem")}"
+      host        = aws_instance.ec2_backend.public_ip
+
+      }
+   depends_on = [null_resource.backend-config]
    }
 }
 
