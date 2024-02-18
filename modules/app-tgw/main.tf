@@ -33,7 +33,6 @@ terraform {
 
 
 
-module "aws-tgw"{
       #----------------------------------------
       # TRANSIT GATEWAYS ACROSS FE AND BE VPCs
       resource "aws_ec2_transit_gateway" "fe-be-tgw" {
@@ -82,4 +81,3 @@ module "aws-tgw"{
       depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
       }
 
-}
