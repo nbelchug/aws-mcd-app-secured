@@ -13,12 +13,12 @@ output "app_be_vpc_id"{
     value =aws_vpc.custom_vpc_be.id
 }
 
-output "app-public-subnet-id"{
+output "app_public_subnet_id"{
     description = "ids of app frontend subnets in front end vpc"
     value = aws_vpc.public_subnet.id
 }
 
-output "app-private-subnet-id"{
+output "app_private_subnet_id"{
     description = "ids of app backend subnets in backend end vpc"
     value = aws_vpc.private_subnet.id
 }

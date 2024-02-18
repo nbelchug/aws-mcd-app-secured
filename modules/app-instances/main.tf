@@ -40,7 +40,8 @@ terraform {
          ami                     = var.ec2_instance_ami
          instance_type           = var.ec2_instance_type
          availability_zone       = var.az1
-         subnet_id               = module.app-vpcs.app-private-subnet-id 
+         subnet_id               = module.application_vpcs.app_public_subnet_id
+      
          key_name                = var.keyname
          associate_public_ip_address = true
 
@@ -119,7 +120,7 @@ terraform {
          ami                     = var.ec2_instance_ami
          instance_type           = var.ec2_instance_type
          availability_zone       = var.az1
-         subnet_id               = module.app-vpcs.app-public-subnet-id  
+         subnet_id               = module.application_vpcs.app-public-subnet-id  
          key_name                = var.keyname
 
          private_dns_name_options {

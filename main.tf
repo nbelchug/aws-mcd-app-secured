@@ -35,20 +35,20 @@ provider "aws" {
 #}
 
 
-module "app-vpcs" {
+module "application_vpcs" {
   source = "./modules/app-vpcs"
 }
 
-module "app-secgroups" {
+module "application_security_groups"{
   source = "./modules/app-secgroups"
 }
 
-module "app-instances" {
+module "application_instances" {
   source = "./modules/app-instances"
 }
 
 
-module "app-tgw" {
+module "application_transitgateway" {
   source = "./modules/app-tgw"
 }
 
