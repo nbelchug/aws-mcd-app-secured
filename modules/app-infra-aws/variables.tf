@@ -14,6 +14,12 @@ variable "environment" {
 }
 
 
+variable "keyname"{
+  description = "name of RSA Key to use to connect Terraform to EC2 instances"
+  type = string
+  default = "terraform-key-devops-admin-ubuntu.pem"
+}
+
 variable "tags" {
   description = "Tags to set on the application."
   type        = map(string)

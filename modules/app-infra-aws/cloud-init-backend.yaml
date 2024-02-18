@@ -1,7 +1,12 @@
 #cloud-config
+
+system_info:
+  default_user:
+    name: ec2-user
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
 package_update: true
 package_upgrade: true
-
 
 packages:
   - git
@@ -11,17 +16,13 @@ packages:
 groups:
   - docker
 
-system_info:
-  default_user:
-    groups: [docker]
-
-
-
-final_message: "The system is finally up, after $UPTIME seconds"
+users:
+ - name: ubuntu
+ - groups: docker
 
 runcmd:
-  - sudo usermod -a -G docker ec2-user
   - sudo newgrp docker
+  - sudo usermod -a -G docker ec2-user
   - sudo systemctl enable docker.service
   - sudo systemctl start docker.service
   - sudo id ec2-user
@@ -30,3 +31,9 @@ runcmd:
   - sudo hostnamectl set-hostname BACKEND-TEASTORE 
   #- cd /tmp && git clone https://github.com/jpianigiani-cisco/aws-mcd-app.git 
 #  - sudo docker-compose -f /webapp-aws-mcd/modules/app-infra-aws/scripts/docker-compose_default_backend.yaml up -d 
+
+system_info:
+  default_user:
+    groups: [docker]
+
+final_message: "The system is finally up, after $UPTIME seconds"

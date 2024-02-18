@@ -7,6 +7,13 @@ system_info:
 package_update: true
 package_upgrade: true
 
+groups:
+  - docker
+
+users:
+ - name: ubuntu
+ - groups: docker
+
 packages:
   - git
   - docker.io
@@ -15,8 +22,8 @@ packages:
 final_message: "The system is finally up, after $UPTIME seconds"
 
 runcmd:
-  - sudo usermod -a -G docker ec2-user
   - sudo newgrp docker
+  - sudo usermod -a -G docker ec2-user
   - sudo systemctl enable docker.service
   - sudo systemctl start docker.service
   - sudo id ec2-user
