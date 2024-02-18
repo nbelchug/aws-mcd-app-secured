@@ -36,17 +36,8 @@ runcmd:
   - sudo apt-get -y install docker-ce docker-ce-cli containerd.io
   - sudo systemctl enable docker
   - sudo systemctl start docker.service
-  - sudo systemctl restart acpid.service
-  - sudo systemctl restart chrony.service
-  - sudo systemctl restart cloud-final.service
-  - sudo systemctl restart cron.service
-  - sudo systemctl restart packagekit.service
-  - sudo systemctl restart polkit.service
-  - sudo systemctl restart rsyslog.service
-  - sudo systemctl restart serial-getty@ttyS0.service
-  - sudo systemctl restart snapd.service
-
   - sudo id $USER
+  - sudo systemctl reboot -i
 
 final_message: "The system is finally up, after $UPTIME seconds"
 

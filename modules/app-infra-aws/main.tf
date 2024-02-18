@@ -343,23 +343,25 @@ resource "aws_instance" "ec2_backend" {
 
 
 resource "null_resource" "backend-config"{ 
+
+   provisioner "remote-exec"{
+                inline = ["echo 'connected!'"]
+   }
    triggers = {
       configfile = templatefile (   "${path.module}/backend.sh" , 
                                     {backendip = aws_instance.ec2_backend.private_ip}
       )
    }
-
    provisioner "file" {
-
       content     = self.triggers.configfile
          destination = "/tmp/backend.sh"
-      }
-      provisioner "remote-exec" {
-         inline = ["sudo chmod 770 /tmp/backend.sh",
-                  "sudo reboot",]
+   }
+   provisioner "remote-exec" {
+         inline = ["sudo chmod 777 /tmp/backend.sh",
+                  "sudo /tmp/backend.sh",]
 
-      }
-      connection {
+   }
+   connection {
          type        = "ssh"
          user        = "ubuntu"
          private_key = "${file("~/.ssh/${var.keyname}.pem")}"
@@ -369,21 +371,7 @@ resource "null_resource" "backend-config"{
   
 }
 
-resource "null_resource" "run_containers_on_backend"{
-   connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = "${file("~/.ssh/${var.keyname}.pem")}"
-      host        = aws_instance.ec2_backend.public_ip
 
-      }
-   provisioner "remote-exec"{
-                inline = ["echo 'connected!'"]
-   }
-   provisioner "remote-exec" {
-      inline = [ "sudo /tmp/backend.sh",]
-   }
-}
 
 #----------------------------------------------------------------------------------
 # INSTANCES BLOCK - EC2 FOR FRONTEND 

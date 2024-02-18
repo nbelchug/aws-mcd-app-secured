@@ -11,4 +11,8 @@ variable "csp_account_name"{
 }
 
 
+variable "app_vpcs" {
+    description = "List of VPCs to import in MCD"   
+    default = ["1","2"]
+}
 
