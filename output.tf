@@ -14,6 +14,21 @@ output "app-vpcs"{
     value = module.app-vpcs.app_vpcs
 }
 
+output "fe_vpc"{
+    value = module.app-vpcs.custom_vpc_fe.id
+}
+output "be_vpc"{
+    value = module.app-vpcs.custom_vpc_be.id
+}
+
+output "public-subnet"{
+    value = module.app-vpcs.public_subnet.id
+}
+
+output "private-subnet"{
+    value = module.app-vpcs.private_subnet.id
+}
+
 output "frontend-nodes-id" {
     description = "list of front end nodes private IP addresses"
     value = module.app-instances.frontend-nodes-id
@@ -44,7 +59,7 @@ output "backend-nodes-public-ips" {
 
 output "transit-gateway-id"{
     description = "id of the tgw of the application in use "
-    value = module.app-tgw.fe-be-tgw.id
+    value = module.app-tgw.transit-gateway-id
 }
 
 
