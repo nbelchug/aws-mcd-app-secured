@@ -15,6 +15,21 @@
 # creating VPC
 
 
+terraform {
+   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.33.0"
+    }
+    ciscomcd = {
+      source = "CiscoDevNet/ciscomcd"
+      version = "0.2.4"
+    }
+
+  }
+  required_version = "~> 1.3"
+}
+
 
 resource "aws_vpc" "custom_vpc_fe" {
    cidr_block       = var.vpc_cidr_frontend
