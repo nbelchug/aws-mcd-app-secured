@@ -379,7 +379,6 @@ resource "null_resource" "run_containers_on_backend"{
       host        = aws_instance.ec2_backend.public_ip
 
       }
-   depends_on = [null_resource.backend-config]
    }
 }
 
