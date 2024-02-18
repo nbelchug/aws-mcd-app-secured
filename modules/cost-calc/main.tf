@@ -4,5 +4,8 @@ module "pricing_example_pricing-terraform-state-and-plan" {
 }
 
 data "local_file" "local_plan" {
-  filename = "${path.module}/../../app-infra-plan.json"
+  filename = "${path.module}/app-infra-plan.json"
 }
+
+
+
