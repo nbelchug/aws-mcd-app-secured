@@ -10,6 +10,12 @@ output "environment"{
     value = var.environment
 }
 
+output "app-vpcs"{
+    description = "id of app vpcs"
+    type = string
+    default = [aws_vpc.custom_vpc_fe, aws_vpc.custom_vpc_be]
+}
+
 output "frontend-nodes-id" {
     description = "list of front end nodes private IP addresses"
     value = aws_instance.ec2_frontend.id
@@ -37,6 +43,10 @@ output "backend-nodes-public" {
     value = aws_instance.ec2_backend.public_ip
 }
 
+output "transit-gateway-id"{
+    description = "id of the tgw of the application in use "
+    value = aws_ec2_transit_gateway.id
+}
 
 
 #output userdata {

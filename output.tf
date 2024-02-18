@@ -1,4 +1,8 @@
 
+output "app_vpcs_to_manage {
+    value = module.app-infra-aws.app-vpcs
+}
+
 output "fe-nodes" {
     value = module.app-infra-aws.frontend-nodes
 
@@ -33,4 +37,7 @@ output "application-name"{
 }
 output "application-environment" {
     value =module.app-infra-aws.environment 
+}
+output "app-tgw-id" {
+    value= module.app-infra-aws.transit-gateway-id
 }
