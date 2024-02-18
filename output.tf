@@ -11,22 +11,22 @@ output "environment"{
 
 output "app-vpcs-list"{
     description = "id of app vpcs"
-    value = module.app-vpcs.app_vpcs_list
+    value = module.application_vpcs.app_vpcs_list
 }
 
 output "fe_vpc"{
-    value = module.app-vpcs.app_fe_vpc_id
+    value = module.application_vpcs.app_fe_vpc_id
 }
 output "be_vpc"{
-    value = module.app-vpcs.app_be_vpc_id
+    value = module.application_vpcs.app_be_vpc_id
 }
 
 output "public-subnet"{
-    value = module.app-vpcs.app-public-subnet-id
+    value = module.application_vpcs.app-public-subnet-id
 }
 
 output "private-subnet"{
-    value = module.app-vpcs.app-private-subnet-id
+    value = module.application_vpcs.app-private-subnet-id
 }
 
 output "frontend-nodes-id" {
