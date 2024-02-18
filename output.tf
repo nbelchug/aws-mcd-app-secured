@@ -9,16 +9,16 @@ output "environment"{
     value = var.environment
 }
 
-output "app_vpcs"{
+output "app-vpcs-list"{
     description = "id of app vpcs"
-    value = module.app-vpcs.app_vpcs
+    value = module.app-vpcs.app_vpcs_list
 }
 
 output "fe_vpc"{
-    value = module.app-vpcs.custom_vpc_fe.id
+    value = module.app-vpcs.app_fe_vpc_id
 }
 output "be_vpc"{
-    value = module.app-vpcs.custom_vpc_be.id
+    value = module.app-vpcs.app_be_vpc_id
 }
 
 output "public-subnet"{
