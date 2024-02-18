@@ -31,35 +31,35 @@ output "private-subnet"{
 
 output "frontend-nodes-id" {
     description = "list of front end nodes private IP addresses"
-    value = module.app-instances.frontend-nodes-id
+    value = module.application_instances.frontend-nodes-id
 }
 output "backend-nodes-id" {
     description = "list of back end nodes private IP addresses"
-    value = module.app-instances.backend-nodes-id
+    value = module.application_instances.backend-nodes-id
 } 
 
 output "frontend-nodes-private-ips" {
     description = "list of front end nodes private IP addresses"
-    value = module.app-instances.frontend-nodes-private-ips
+    value = module.application_instances.frontend-nodes-private-ips
 }
 output "backend-nodes-private-ips" {
     description = "list of back end nodes private IP addresses"
-    value = module.app-instances.backend-nodes-private-ips
+    value = module.application_instances.backend-nodes-private-ips
 }
 
 output "frontend-nodes-public-ips" {
     description = "list of front end nodes private IP addresses"
-    value = module.app-instances.frontend-nodes-public-ips
+    value = module.application_instances.frontend-nodes-public-ips
 }
 output "backend-nodes-public-ips" {
     description = "list of back end nodes private IP addresses"
-    value = module.app-instances.backend-nodes-public-ips
+    value = module.application_instances.backend-nodes-public-ips
 
 }
 
 output "transit-gateway-id"{
     description = "id of the tgw of the application in use "
-    value = module.app-tgw.transit-gateway-id
+    value = module.application_transitgateway.transit-gateway-id
 }
 
 
