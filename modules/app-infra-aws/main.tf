@@ -360,7 +360,7 @@ resource "null_resource" "backend-config"{
    connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${file("~/.ssh/${keyname}.pem")}"
+      private_key = "${file("~/.ssh/${var.keyname}.pem")}"
       host        = aws_instance.ec2_backend.public_ip
 
    }
@@ -442,7 +442,7 @@ resource "null_resource" "frontend-config"{
    connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${file("~/.ssh/${keyname}.pem")}"
+      private_key = "${file("~/.ssh/${var.keyname}.pem")}"
       host        = aws_instance.ec2_frontend.public_ip
 
    }
