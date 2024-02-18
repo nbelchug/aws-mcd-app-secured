@@ -4,7 +4,6 @@ output "application-name"{
     value = var.application_name
 }
 
-
 output "environment"{
     description = "Dev Val Prod"
     value = var.environment
@@ -12,8 +11,8 @@ output "environment"{
 
 output "app-vpcs"{
     description = "id of app vpcs"
-    type = string
-    default = [aws_vpc.custom_vpc_fe, aws_vpc.custom_vpc_be]
+    type = list
+    default = [aws_vpc.custom_vpc_fe.id, aws_vpc.custom_vpc_be.id]
 }
 
 output "frontend-nodes-id" {

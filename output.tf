@@ -1,7 +1,7 @@
 
-output "app_vpcs_to_manage {
-    value = module.app-infra-aws.app-vpcs
-}
+#output "app_vpcs_to_manage" {
+#    value = module.app-infra-aws.app-vpcs
+#}
 
 output "fe-nodes" {
     value = module.app-infra-aws.frontend-nodes
