@@ -39,10 +39,10 @@ module "app-infra-aws" {
   source = "./modules/app-infra-aws"
 }
 
-module "cost-calc"{
-  source = "./modules/cost-calc"
-}
-
-#module "provision-mcd" {
-#  source = "./modules/provision-mcd"
+#module "cost-calc"{
+#  source = "./modules/cost-calc"
 #}
+
+module "provision-mcd" {
+  source = "./modules/provision-mcd"
+}
