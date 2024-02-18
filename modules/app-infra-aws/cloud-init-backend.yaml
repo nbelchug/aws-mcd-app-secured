@@ -4,6 +4,7 @@ package_upgrade: true
 packages:
   - git
 runcmd:
+  - sudo groupadd docker
   - sudo dnf install python3.11 -y
   #- amazon-linux-extras install docker -y
   - sudo yum install docker -y
@@ -15,6 +16,8 @@ runcmd:
   - sudo systemctl start docker.service
   - sudo usermod -aG docker $USER
   - sudo id ec2-user
+  - sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+  - sudo chmod g+rwx "$HOME/.docker" -R
   #- sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   #- sudo chmod +x /usr/local/bin/docker-compose
   - sudo hostnamectl set-hostname BACKEND-TEASTORE 

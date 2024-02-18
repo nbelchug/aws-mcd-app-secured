@@ -349,7 +349,7 @@ resource "null_resource" "backend-config"{
 }
 
 #----------------------------------------------------------------------------------
-# INSTANCES BLOCK - EC2 and DATABASE
+# INSTANCES BLOCK - EC2 FOR FRONTEND 
 resource "aws_instance" "ec2_frontend" {
    ami                     = var.ec2_instance_ami
    instance_type           = var.ec2_instance_type
