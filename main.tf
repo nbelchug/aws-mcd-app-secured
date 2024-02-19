@@ -38,27 +38,37 @@ provider "aws" {
 module "application_vpcs" {
   source = "./modules/app-vpcs"
 
-  app_vpcs_list = [aws_vpc.custom_vpc_fe.id, aws_vpc.custom_vpc_be.id]
-  app_fe_vpc_id= aws_vpc.custom_vpc_fe.id
-  app_be_vpc_id=aws_vpc.custom_vpc_be.id
-  app_public_subnet_id= aws_vpc.public_subnet.id
-  pp_private_subnet_id= aws_vpc.private_subnet.id
-  app_fe_vpc_cidr_block= aws_vpc.custom_vpc_fe.cidr_block
-  app_be_vpc_cidr_block = aws_vpc.custom_vpc_be.cidr_block
+
 
 }
 
 module "application_security_groups"{
   source = "./modules/app-secgroups"
+  app_fe_vpc_id = module.application_vpcs.app_fe_vpc_id 
+  app_be_vpc_id = module.application_vpcs.app_be_vpc_id 
+  app_fe_cidr_block = module.application_vpcs.app_fe_vpc_cidr_block
+  app_be_cidr_block = module.application_vpcs.app_be_vpc_cidr_block
+
 }
 
 module "application_instances" {
   source = "./modules/app-instances"
+  app_private_subnet_id=module.application_vpcs.app_private_subnet_id
+  app_public_subnet_id=module.application_vpcs.app_public_subnet_id
+  frontend_sg = module.app-secgroups.frontend_sg
+  backend_sg = module.app-secgroups.backend_sg
 }
 
 
 module "application_transitgateway" {
   source = "./modules/app-tgw"
+  app_fe_vpc_id = module.application_vpcs.app_fe_vpc_id 
+  app_be_vpc_id = module.application_vpcs.app_be_vpc_id 
+  app_private_subnet_id=module.application_vpcs.app_private_subnet_id
+  app_public_subnet_id=module.application_vpcs.app_public_subnet_id
+  app_fe_cidr_block = module.application_vpcs.app_fe_vpc_cidr_block
+  app_be_cidr_block = module.application_vpcs.app_be_vpc_cidr_block
+
 }
 
 
