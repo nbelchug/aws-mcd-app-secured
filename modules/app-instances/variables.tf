@@ -5,6 +5,7 @@ variable "environment"{
     type = string
 }
 
+
 variable "ec2_instance_ami"{
     type = string
 }

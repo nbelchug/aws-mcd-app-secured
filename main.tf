@@ -105,11 +105,16 @@ module "application_transitgateway" {
 
 module "provision-mcd" {
   source = "./modules/provision-mcd"
+  csp_account_name = var.csp_account_name
   application_name = var.application_name
   environment = var.environment
+  aws_region = var.aws_region
+
   az1 = var.az1
+  az2 = var.az2
+  az3 = var.az3
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
   app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id 
-    app_vpcs = [app_fe_vpc_id, app_be_vpc_id]
+  app_vpcs = [app_fe_vpc_id, app_be_vpc_id]
 
 }
