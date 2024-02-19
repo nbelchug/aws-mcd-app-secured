@@ -45,7 +45,7 @@ terraform {
          key_name                = var.keyname
          associate_public_ip_address = true
 
-         vpc_security_group_ids  = var.mybackend_sg
+         vpc_security_group_ids  = [var.mybackend_sg]
          root_block_device {
             volume_size = 30 # in GB 
             volume_type = "gp3"
@@ -128,7 +128,7 @@ terraform {
          }
 
          associate_public_ip_address = true
-         vpc_security_group_ids  = var.myfrontend_sg
+         vpc_security_group_ids  =[var.myfrontend_sg]
          root_block_device {
             volume_size = 30 # in GB 
             volume_type = "gp3"
