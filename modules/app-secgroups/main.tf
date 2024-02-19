@@ -36,7 +36,7 @@ terraform {
       resource "aws_security_group" "frontend_sg" {
       name        = "frontend_sg"
       description = "Allow SSH 8080 inbound traffic and all outbound traffic, allow 3306 and 8080 to backend"
-      vpc_id      = app_be_vpc_id
+      vpc_id      = var.app_be_vpc_id
 
       tags = {
          Name = "mcd-demo-teashop-frontend-sg"
@@ -74,7 +74,7 @@ terraform {
 
       resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_frontend" {
          security_group_id = aws_security_group.frontend_sg.id
-         cidr_ipv4         = module.application_vpcs.app_fe_vpc_cidr_block
+         cidr_ipv4         = var.app_fe_cidr_block
          ip_protocol       = "icmp"
          from_port         = -1
          to_port           = -1
@@ -91,7 +91,7 @@ terraform {
       resource "aws_security_group" "backend_sg" {
       name        = "backend_sg"
       description = "Allow  SSH DB 8080 inbound traffic and outbound to public subnet"
-      vpc_id      =app_fe_vpc_id
+      vpc_id      =  var.app_fe_vpc_id
 
       tags = {
          Name = "mcd-demo-teashop-backend-sg"
@@ -117,14 +117,14 @@ terraform {
       }
       resource "aws_vpc_security_group_ingress_rule" "allow_in_3306_ipv4_backend" {
       security_group_id = aws_security_group.backend_sg.id
-      cidr_ipv4         = aws_vpc.custom_vpc_fe.cidr_block
+      cidr_ipv4         = var.app_fe_cidr_block
       from_port         = 3306
       ip_protocol       = "tcp"
       to_port           = 3306
       }
       resource "aws_vpc_security_group_ingress_rule" "allow_in_8080_ipv4_backend" {
       security_group_id = aws_security_group.backend_sg.id
-      cidr_ipv4         = app_be_cidr_block
+      cidr_ipv4         = var.app_fe_cidr_block
       from_port         = 8080
       ip_protocol       = "tcp"
       to_port           = 8080
@@ -133,7 +133,7 @@ terraform {
 
       resource "aws_vpc_security_group_ingress_rule" "allow_in_icmp_ipv4_backend" {
       security_group_id = aws_security_group.backend_sg.id
-      cidr_ipv4         = app_fe_cidr_block
+      cidr_ipv4         = var.app_fe_cidr_block
       ip_protocol       = "icmp"
          from_port         = -1
          to_port           = -1
