@@ -52,10 +52,10 @@ module "application_security_groups"{
 module "application_instances" {
   source = "./modules/app-instances"
 
-  app_private_subnet_id =   module.application_vpcs.app_private_subnet_id
-  app_public_subnet_id  =   module.application_vpcs.app_public_subnet_id
-  frontend_sg           =   module.application_security_groups.frontend_sg
-  backend_sg            =   module.application_security_groups.backend_sg
+  myapp_private_subnet_id =   module.application_vpcs.app_private_subnet_id
+  myapp_public_subnet_id  =   module.application_vpcs.app_public_subnet_id
+  myfrontend_sg           =   module.application_security_groups.frontend_sg
+  mybackend_sg            =   module.application_security_groups.backend_sg
 
     depends_on = [module.application_vpcs, module.application_security_groups]
 }
