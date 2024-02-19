@@ -37,6 +37,12 @@ provider "aws" {
 
 module "application_vpcs" {
   source = "./modules/app-vpcs"
+  vpc_cidr_frontend = var.vpc_cidr_frontend
+  vpc_cidr_backend = var.vpc_cidr_backend
+  application_name = var.application_name
+  environment = var.environment
+  
+
 }
 
 module "application_security_groups" {
