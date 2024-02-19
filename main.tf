@@ -37,9 +37,6 @@ provider "aws" {
 
 module "application_vpcs" {
   source = "./modules/app-vpcs"
-
-
-
 }
 
 module "application_security_groups"{
