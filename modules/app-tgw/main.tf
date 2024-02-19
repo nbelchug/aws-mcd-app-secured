@@ -22,7 +22,6 @@ terraform {
       #----------------------------------------
       # TRANSIT GATEWAYS ACROSS FE AND BE VPCs
       resource "aws_ec2_transit_gateway" "fe-be-tgw" {
-         count = (var.skip_tgw == false ? 1 : 0)
       description                     = "Transit Gateway between FE and BE for app"
       default_route_table_association = "enable"
       default_route_table_propagation = "enable"
@@ -39,9 +38,9 @@ terraform {
       #----------------------------------------
       # TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
       resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
-         subnet_ids         = [app_public_subnet_id]
+         subnet_ids         = [var.app_public_subnet_id]
          transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-         vpc_id             = app_fe_vpc_id
+         vpc_id             = var.app_fe_vpc_id
          transit_gateway_default_route_table_association = true
          transit_gateway_default_route_table_propagation = true
          tags               = {
@@ -54,9 +53,9 @@ terraform {
       #----------------------------------------
       # TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
       resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
-      subnet_ids         = [app_private_subnet_id]
+      subnet_ids         = [var.app_private_subnet_id]
       transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-      vpc_id             = app_be_vpc_id
+      vpc_id             = var.app_be_vpc_id
       transit_gateway_default_route_table_association = true
       transit_gateway_default_route_table_propagation = true
       tags               = {
