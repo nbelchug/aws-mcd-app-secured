@@ -24,12 +24,12 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
   transit_gateway_id = var.tgw_id
   use_nat_gateway    = true
 
-  tags = {
-      Name = "mcd-demo-teashop-servicevpc"
-      Tier = "service-vpc"
-      Application = var.application_name
-      Environment = var.environment
-   }
+#  tags = {
+#      Name = "mcd-demo-teashop-servicevpc"
+#      Tier = "service-vpc"
+#      Application = var.application_name
+#      Environment = var.environment
+#   }
 }
 
 resource "ciscomcd_spoke_vpc" "ciscomcd_spoke_" {
