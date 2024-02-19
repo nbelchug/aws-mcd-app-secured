@@ -6,10 +6,7 @@ variable "csp_account_name"{
 variable "aws_region"{
     type= string
 }
-variable "app_vpcs" {
-    description = "List of VPCs to import in MCD"
-    type = list(string)   
-}
+
 variable "app_fe_vpc_id"{
     type = string
 }
