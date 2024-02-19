@@ -36,7 +36,7 @@ runcmd:
   - sudo systemctl enable docker
   - sudo systemctl start docker.service
   - sudo id $USER
-  - sudo systemctl reboot -i
+
 
 final_message: "The system is finally up, after $UPTIME seconds"
 
