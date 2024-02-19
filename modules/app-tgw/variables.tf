@@ -8,7 +8,7 @@ variable "app_be_vpc_id" {
 variable "app_private_subnet_id" {
   type = string
 }
-variable "app_public_subnet_id " {
+variable "app_public_subnet_id" {
   type = string
 }
 variable "app_fe_cidr_block" {
