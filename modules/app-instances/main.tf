@@ -57,9 +57,8 @@ terraform {
             Application = var.application_name
             Environment = var.environment
 
-         } 
+         }
          
-         var.backendip = aws_instance.ec2_backend.private_ip
          
          user_data = file("${path.module}/cloud-init-backend.yaml")
 
@@ -88,7 +87,8 @@ terraform {
       resource "null_resource" "backend-config"{ 
 
          provisioner "remote-exec"{
-                     inline = ["echo 'connected!'"]
+                     inline = ["echo 'connected!'",
+                              "docker version"]
          }
          triggers = {
             configfile = templatefile (   "${path.module}/backend.sh" , 
