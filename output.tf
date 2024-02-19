@@ -11,7 +11,7 @@ output "environment"{
 
 output "app-vpcs-list"{
     description = "id of app vpcs"
-    value = module.application_vpcs.app_vpcs_list
+    value = [module.application_vpcs.app_fe_vpc_id,module.application_vpcs.app_be_vpc_id ]
 }
 
 output "fe_vpc"{
@@ -21,13 +21,6 @@ output "be_vpc"{
     value = module.application_vpcs.app_be_vpc_id
 }
 
-output "public-subnet"{
-    value = module.application_vpcs.app_public_subnet_id
-}
-
-output "private-subnet"{
-    value = module.application_vpcs.app_private_subnet_id
-}
 
 output "frontend-nodes-id" {
     description = "list of front end nodes private IP addresses"
