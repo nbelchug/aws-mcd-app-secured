@@ -27,7 +27,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = "us-east-1"
+  region  = var.aws_region 
 }
 
 #provider "ciscomcd" {
@@ -107,6 +107,9 @@ module "provision-mcd" {
   source = "./modules/provision-mcd"
   application_name = var.application_name
   environment = var.environment
+  az1 = var.az1
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
   app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id 
+    app_vpcs = [app_fe_vpc_id, app_be_vpc_id]
+
 }

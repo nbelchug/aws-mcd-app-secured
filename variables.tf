@@ -1,16 +1,17 @@
 variable "csp_account_name"{
   type = string
-  sensitive = true
+  default = "905418156764"
 }
 
 variable "ciscomcd_api_key_file" {
     description = " Key to access cisco MCD"
     type = string
-     sensitive = true
+    default = "~/.ssh/TERRAFORM2.json"
 }    
-# --- root/Terraform_projects/terraform_two_tier_architecture/variables.tf
-
-
+variable "aws_region"{
+  type= string
+  default = "us-east-1"
+}
 variable "application_name" {
   description = "Name of the application. Must be unique."
   type        = string

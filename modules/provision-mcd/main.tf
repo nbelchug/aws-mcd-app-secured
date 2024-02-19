@@ -15,7 +15,7 @@ terraform {
 resource "ciscomcd_service_vpc" "aws_service_vpc" {
   name               = "aws-service-vpc"
   csp_account_name   = var.csp_account_name
-  region             = "us-east-1"
+  region             = var.aws_region
   cidr               = var.service_vpc_subnet
   availability_zones = [var.az1]
   transit_gateway_id = module.app-infra-aws.app-tgw-id
@@ -29,10 +29,10 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
    }
 }
 
-resource "ciscomcd_spoke_vpc" "ciscomcd_spoke" {
+resource "ciscomcd_spoke_vpc" "ciscomcd_spoke_" {
   count = var.app_vpcs.length
   service_vpc_id = ciscomcd_service_vpc.aws_service_vpc.id
-  spoke_vpc_id   = module.app-infra-aws.app_vpcs[count.index].id
+  spoke_vpc_id   = var.app_fe_vpc_id
 }
 
 
