@@ -26,7 +26,7 @@ variable "service_vpc_subnet" {
 
 }
 
-variable "tags° {
+variable "tags" {
     type = map(string)
 }
 
