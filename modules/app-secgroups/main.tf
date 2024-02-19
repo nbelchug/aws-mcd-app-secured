@@ -14,7 +14,6 @@
 # VPC BLOCK
 # creating VPC
 
-
 terraform {
    required_providers {
     aws = {

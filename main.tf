@@ -39,7 +39,7 @@ module "application_vpcs" {
   source = "./modules/app-vpcs"
 }
 
-module "application_security_groups"{
+module "application_security_groups" {
   source = "./modules/app-secgroups"
   app_fe_vpc_id = module.application_vpcs.app_fe_vpc_id 
   app_be_vpc_id = module.application_vpcs.app_be_vpc_id 
