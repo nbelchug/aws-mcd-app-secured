@@ -109,6 +109,7 @@ module "provision-mcd" {
   application_name = var.application_name
   environment = var.environment
   aws_region = var.aws_region
+  tags = var.tags
 
   az1 = var.az1
   az2 = var.az2
