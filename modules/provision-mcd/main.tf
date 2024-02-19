@@ -3,7 +3,10 @@
 
 terraform {
    required_providers {
-
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.33.0"
+    }
     ciscomcd = {
       source = "CiscoDevNet/ciscomcd"
       version = "0.2.4"
@@ -21,7 +24,7 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
   transit_gateway_id = var.tgw_id
   use_nat_gateway    = true
 
-   tags = {
+  tags = {
       Name = "mcd-demo-teashop-servicevpc"
       Tier = "service-vpc"
       Application = var.application_name
