@@ -12,5 +12,6 @@
   echo "Exit code is $?"
   echo "docker run -p 3306:3306 -d descartesresearch/teastore-db" >> /tmp/address.log
   docker run -p 3306:3306 -d descartesresearch/teastore-db
+  echo "Exit code is $?"
 
   exit [0] 
