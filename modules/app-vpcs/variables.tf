@@ -13,3 +13,12 @@ variable "environment"{
     type = string
 }
 
+variable "az_list"{
+    type = list(string)
+}
+variable "public_subnet"{
+        type = string
+}
+variable "private_subnet"{
+        type = string
+}

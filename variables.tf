@@ -37,6 +37,10 @@ variable "tags" {
   default     = {}
 }
 
+variable "az_list"{
+  type = list(string)
+  default =   ["us-east-1a"]
+}
 # AZ 1
 variable "az1" {
   description = "availability zone 1"

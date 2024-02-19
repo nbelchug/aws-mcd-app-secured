@@ -41,7 +41,8 @@ module "application_vpcs" {
   vpc_cidr_backend = var.vpc_cidr_backend
   application_name = var.application_name
   environment = var.environment
-  
+  az_list = var.az_list
+
 
 }
 
