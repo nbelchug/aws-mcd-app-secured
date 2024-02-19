@@ -36,7 +36,7 @@ terraform {
       resource "aws_security_group" "frontend_sg" {
       name        = "frontend_sg"
       description = "Allow SSH 8080 inbound traffic and all outbound traffic, allow 3306 and 8080 to backend"
-      vpc_id      = var.app_be_vpc_id
+      vpc_id      = var.app_fe_vpc_id
 
       tags = {
          Name = "mcd-demo-teashop-frontend-sg"
@@ -91,7 +91,7 @@ terraform {
       resource "aws_security_group" "backend_sg" {
       name        = "backend_sg"
       description = "Allow  SSH DB 8080 inbound traffic and outbound to public subnet"
-      vpc_id      =  var.app_fe_vpc_id
+      vpc_id      =  var.app_be_vpc_id
 
       tags = {
          Name = "mcd-demo-teashop-backend-sg"

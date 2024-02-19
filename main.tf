@@ -103,6 +103,10 @@ module "application_transitgateway" {
 #  source = "./modules/cost-calc"
 #}
 
-#module "provision-mcd" {
-#  source = "./modules/provision-mcd"
-#}
+module "provision-mcd" {
+  source = "./modules/provision-mcd"
+  application_name = var.application_name
+  environment = var.environment
+  app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
+  app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id 
+}
