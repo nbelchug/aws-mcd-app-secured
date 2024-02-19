@@ -18,7 +18,7 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
   region             = var.aws_region
   cidr               = var.service_vpc_subnet
   availability_zones = [var.az1]
-  transit_gateway_id = module.app-infra-aws.app-tgw-id
+  transit_gateway_id = var.tgw_id
   use_nat_gateway    = true
 
    tags = {
