@@ -72,6 +72,7 @@ module "application_instances" {
   az1 = var.az1
   az2 = var.az2
   az3 = var.az3
+  keyname = var.keyname
   myapp_private_subnet_id =   module.application_vpcs.app_private_subnet_id
   myapp_public_subnet_id  =   module.application_vpcs.app_public_subnet_id
   myfrontend_sg           =   module.application_security_groups.frontend_sg

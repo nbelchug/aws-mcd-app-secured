@@ -20,6 +20,11 @@ variable "az2"{
 variable "az3"{
     type = string
 }
+
+variable "keyname"{
+    type = string
+}
+
 variable "myapp_private_subnet_id" {
     type = string
 }
