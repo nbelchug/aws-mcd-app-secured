@@ -1,10 +1,5 @@
 
 
-variable "tags" {
-  description = "Tags to set on the application."
-  type        = map(string)
-  default     = {}
-}
 
 variable "csp_account_name"{
     type = string
