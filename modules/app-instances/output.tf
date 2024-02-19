@@ -25,3 +25,4 @@ output "backend-nodes-public-ips" {
     description = "list of back end nodes private IP addresses"
     value = [aws_instance.ec2_backend.public_ip]
 }
+

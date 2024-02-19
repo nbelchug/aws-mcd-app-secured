@@ -51,6 +51,7 @@ module "application_security_groups"{
 
 module "application_instances" {
   source = "./modules/app-instances"
+  
   app_private_subnet_id=module.application_vpcs.app_private_subnet_id
   app_public_subnet_id=module.application_vpcs.app_public_subnet_id
   frontend_sg = module.application_security_groups.frontend_sg
