@@ -46,6 +46,3 @@ variable "az2"{
 variable "az3"{
     type = string
 }
-variable "tags"{
-
-}
