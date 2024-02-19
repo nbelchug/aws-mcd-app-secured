@@ -4,6 +4,22 @@ variable "application_name"{
 variable "environment"{
     type = string
 }
+
+variable "ec2_instance_ami"{
+    type = string
+}
+variable "ec2_instance_type"{
+    type = string
+}
+variable "az1"{
+    type = string
+}
+variable "az2"{
+    type = string
+}
+variable "az3"{
+    type = string
+}
 variable "myapp_private_subnet_id" {
     type = string
 }

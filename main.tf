@@ -67,6 +67,8 @@ module "application_instances" {
   source = "./modules/app-instances"
   application_name = var.application_name
   environment = var.environment
+  ec2_instance_ami = var.ec2_instance_ami
+  ec2_instance_type = var.ec2_instance_type
   myapp_private_subnet_id =   module.application_vpcs.app_private_subnet_id
   myapp_public_subnet_id  =   module.application_vpcs.app_public_subnet_id
   myfrontend_sg           =   module.application_security_groups.frontend_sg
@@ -84,8 +86,8 @@ module "application_transitgateway" {
   app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id 
   app_private_subnet_id =   module.application_vpcs.app_private_subnet_id
   app_public_subnet_id  =   module.application_vpcs.app_public_subnet_id
-  app_fe_cidr_block     =   module.application_vpcs.app_fe_vpc_cidr_block
-  app_be_cidr_block     =   module.application_vpcs.app_be_vpc_cidr_block
+  app_fe_cidr_block     =   module.application_vpcs.app_fe_cidr_block
+  app_be_cidr_block     =   module.application_vpcs.app_be_cidr_block
 
     depends_on = [module.application_vpcs]
 
