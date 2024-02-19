@@ -5,6 +5,11 @@ variable "environment"{
     type = string
 }
 
+variable "tags" {
+  description = "Tags to set on the application."
+  type        = map(string)
+  default     = {}
+}
 
 variable "ec2_instance_ami"{
     type = string

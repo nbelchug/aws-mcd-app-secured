@@ -1,4 +1,11 @@
 
+
+variable "tags" {
+  description = "Tags to set on the application."
+  type        = map(string)
+  default     = {}
+}
+
 variable "csp_account_name"{
     type = string
 }
@@ -38,4 +45,7 @@ variable "az2"{
 }
 variable "az3"{
     type = string
+}
+variable "tags"{
+
 }
