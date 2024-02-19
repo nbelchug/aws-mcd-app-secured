@@ -46,14 +46,17 @@ module "application_security_groups"{
   app_fe_cidr_block = module.application_vpcs.app_fe_vpc_cidr_block
   app_be_cidr_block = module.application_vpcs.app_be_vpc_cidr_block
 
+  depends_on = [module.application_vpcs]
 }
 
 module "application_instances" {
   source = "./modules/app-instances"
   app_private_subnet_id=module.application_vpcs.app_private_subnet_id
   app_public_subnet_id=module.application_vpcs.app_public_subnet_id
-  frontend_sg = module.app-secgroups.frontend_sg
-  backend_sg = module.app-secgroups.backend_sg
+  frontend_sg = module.application_security_groups.frontend_sg
+  backend_sg = module.application_security_groups.backend_sg
+
+  depends_on = [module.application_vpcs, module.application_security_groups]
 }
 
 
@@ -65,6 +68,8 @@ module "application_transitgateway" {
   app_public_subnet_id=module.application_vpcs.app_public_subnet_id
   app_fe_cidr_block = module.application_vpcs.app_fe_vpc_cidr_block
   app_be_cidr_block = module.application_vpcs.app_be_vpc_cidr_block
+
+    depends_on = [module.application_vpcs]
 
 }
 
