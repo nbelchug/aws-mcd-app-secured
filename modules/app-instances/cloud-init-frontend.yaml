@@ -1,16 +1,54 @@
 #cloud-config
+
 package_update: true
 package_upgrade: true
+
 packages:
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - gnupg-agent
-  - software-properties-common
+  - git
+  - docker.io
+  - unattended-upgrades
+
+groups:
+  - docker
+
+users:
+ - name: ubuntu
+ - groups: docker
+
+system_info:
+  default_user:
+    groups: [docker]
+    name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+final_message: "The system is finally up, after $UPTIME seconds"
+
+write_files:
+  - path: /tmp/frontend.sh
+    content : |
+      #!/bin/bash
+      docker run -e "REGISTRY_HOST=${var.backendip}" -e "REGISTRY_PORT=10000" -e "HOST_NAME=$ownip" -e "SERVICE_PORT=1111" -e "DB_HOST=$backendip" -e "DB_PORT=3306" -p 1111:8080 -d descartesresearch/teastore-persistence
+      docker run -e "REGISTRY_HOST=$backendip" -e "REGISTRY_PORT=10000" -e "HOST_NAME=$ownip" -e "SERVICE_PORT=2222" -p 2222:8080 -d descartesresearch/teastore-auth
+      docker run -e "REGISTRY_HOST=$backendip" -e "REGISTRY_PORT=10000" -e "HOST_NAME=$ownip" -e "SERVICE_PORT=3333" -p 3333:8080 -d descartesresearch/teastore-recommender
+      docker run -e "REGISTRY_HOST=$backendip" -e "REGISTRY_PORT=10000" -e "HOST_NAME=$ownip" -e "SERVICE_PORT=4444" -p 4444:8080 -d descartesresearch/teastore-image
+      docker run -e "REGISTRY_HOST=$backendip" -e "REGISTRY_PORT=10000" -e "HOST_NAME=$ownip" -e "SERVICE_PORT=8080" -p 8080:8080 -d descartesresearch/teastore-webui
+
+
 runcmd:
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-  - add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-  - apt-get update -y
-  - apt-get install -y docker-ce docker-ce-cli containerd.io
-  - systemctl start docker
-  - systemctl enable docker
+# TEMP
+  - curl -fsSL https://get.docker.com | sh
+#TEMP
+  - sudo usermod -aG docker $USER
+  - sudo systemctl enable docker.service
+  - sudo systemctl start docker.service
+  - sudo id $USER
+  #- sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  #- sudo chmod +x /usr/local/bin/docker-compose
+  - sudo hostnamectl set-hostname FRONTEND-TEASTORE 
+  #- cd /tmp && git clone https://github.com/jpianigiani-cisco/aws-mcd-app.git
+#  - sudo docker-compose -f /webapp-aws-mcd/modules/app-infra-aws/scripts/docker-compose_default_frontend.yaml up -d
+
+  - [chmod, -R, 777, '/tmp/frontend.sh']
+  - [su, ubuntu, -c, /tmp/frontend.sh]
+
+
