@@ -16,6 +16,16 @@ variable "environment"{
 variable "az_list"{
     type = list(string)
 }
+
+variable "az1"{
+    type = string
+}
+variable "az2"{
+    type = string
+}
+variable "az3"{
+    type = string
+}
 variable "public_subnet"{
         type = string
 }

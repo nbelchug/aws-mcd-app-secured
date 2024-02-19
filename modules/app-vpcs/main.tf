@@ -50,7 +50,7 @@ terraform {
       resource "aws_subnet" "public_subnet" {   
          vpc_id            = aws_vpc.custom_vpc_fe.id
          cidr_block        = var.public_subnet
-         availability_zone = var.az_list
+         availability_zone = var.az1
 
          tags = {
             Name = "mcd-demo-teashop-frontend-subnet"

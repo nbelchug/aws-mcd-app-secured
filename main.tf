@@ -42,6 +42,9 @@ module "application_vpcs" {
   application_name = var.application_name
   environment = var.environment
   az_list = var.az_list
+  az1 = var.az1
+  az2 = var.az2
+  az3 = var.az3
   private_subnet =var.private_subnet
   public_subnet = var.public_subnet
 
