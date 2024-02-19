@@ -59,7 +59,7 @@ terraform {
 
          } 
          
-         backendip = aws_instance.ec2_backend.private_ip
+         var.backendip = aws_instance.ec2_backend.private_ip
          
          user_data = file("${path.module}/cloud-init-backend.yaml")
 
