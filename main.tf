@@ -105,6 +105,7 @@ module "application_transitgateway" {
 
 module "provision-mcd" {
   source = "./modules/provision-mcd"
+  ciscomcd_api_key_file = var.ciscomcd_api_key_file
   csp_account_name = var.csp_account_name
   application_name = var.application_name
   environment = var.environment
