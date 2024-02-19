@@ -114,7 +114,8 @@ module "provision-mcd" {
   az2 = var.az2
   az3 = var.az3
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
-  app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id 
+  app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id
+  tgw_id                =   module.application_transitgateway.transit-gateway-id
   app_vpcs = [app_fe_vpc_id, app_be_vpc_id]
 
 }

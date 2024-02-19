@@ -16,6 +16,9 @@ variable "app_fe_vpc_id"{
 variable "app_be_vpc_id"{
     type = string 
 }
+variable "tgw_id"{
+    type = string
+}
 
 variable "service_vpc_subnet" {
     description = "subnet used in Service VPC"
