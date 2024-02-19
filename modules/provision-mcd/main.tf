@@ -32,10 +32,14 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
 #   }
 }
 
-resource "ciscomcd_spoke_vpc" "ciscomcd_spoke_" {
-  count = var.app_vpcs.length
+resource "ciscomcd_spoke_vpc" "ciscomcd_spoke_1" {
+
   service_vpc_id = ciscomcd_service_vpc.aws_service_vpc.id
   spoke_vpc_id   = var.app_fe_vpc_id
 }
 
+resource "ciscomcd_spoke_vpc" "ciscomcd_spoke_2" {
 
+  service_vpc_id = ciscomcd_service_vpc.aws_service_vpc.id
+  spoke_vpc_id   = var.app_be_vpc_id
+}
