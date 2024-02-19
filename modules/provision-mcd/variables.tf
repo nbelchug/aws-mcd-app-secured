@@ -1,5 +1,7 @@
 
-
+variable "ciscomcd_api_key_file"{
+    type = string
+}
 
 variable "csp_account_name"{
     type = string
