@@ -30,9 +30,9 @@ provider "aws" {
   region  = var.aws_region 
 }
 
-#provider "ciscomcd" {
-#  api_key_file = file(var.ciscomcd_api_key_file)
-#}
+provider "ciscomcd" {
+  api_key_file = file(var.ciscomcd_api_key_file)
+}
 
 
 module "application_vpcs" {
