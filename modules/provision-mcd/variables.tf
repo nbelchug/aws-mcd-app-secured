@@ -25,6 +25,11 @@ variable "service_vpc_subnet" {
     default = "10.254.0.0/24"
 
 }
+
+variable "tags° {
+    type = map(string)
+}
+
 variable "application_name"{
     type = string
 }
