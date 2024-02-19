@@ -98,7 +98,7 @@ terraform {
                destination = "/tmp/backend.sh"
          }
          provisioner "remote-exec" {
-               inline = ["sudo chmod 777 /tmp/backend.sh",
+               inline = ["sudo chmod a+x /tmp/backend.sh",
                         "sudo /tmp/backend.sh",]
 
          }
