@@ -11,7 +11,7 @@ output "app_fe_vpc_id" {
 }
 
 output "app_be_vpc_id" {
-    vaslue = aws_vpc.custom_vpc_be.id
+    value = aws_vpc.custom_vpc_be.id
 }
 
 output "app_fe_cidr_block"{
