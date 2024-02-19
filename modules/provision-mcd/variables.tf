@@ -7,7 +7,6 @@ variable "service_vpc_subnet" {
 
 variable "csp_account_name"{
     type = string
-    default = "905418156764"
 }
 
 

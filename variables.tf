@@ -1,8 +1,12 @@
+variable "csp_account_name"{
+  type = string
+  sensitive = true
+}
 
 variable "ciscomcd_api_key_file" {
     description = " Key to access cisco MCD"
     type = string
-    default = "~/.ssh/TERRAFORM2.json"
+     sensitive = true
 }    
 # --- root/Terraform_projects/terraform_two_tier_architecture/variables.tf
 
