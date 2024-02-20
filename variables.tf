@@ -47,7 +47,7 @@ variable "tags" {
 
 variable "az_list"{
   type = list(string)
-  default =   ["us-east-1a"]
+  default =   ["us-east-1a", "us-east-1b","us-east-1c"]
 }
 # AZ 1
 variable "az1" {
@@ -109,7 +109,6 @@ variable "ec2_instance_ami" {
   type        = string
   #default     = "ami-0e731c8a588258d0d"
   default =     "ami-0c7217cdde317cfec"
-
 
 }
 
