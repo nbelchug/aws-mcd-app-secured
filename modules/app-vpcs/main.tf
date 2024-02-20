@@ -23,8 +23,9 @@ terraform {
          enable_dns_support   = true
 
          tags = {
-            Name = "mcd-demo-teashop-frontend"
-            Tier = "front-end"
+            Name = format("mcd-demo-%s-frontend-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-frontend"
+            Tier = "frontend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -39,8 +40,9 @@ terraform {
          enable_dns_support   = true
 
          tags = {
-            Name = "mcd-demo-teashop-backend"
-            Tier = "front-end"
+            Name = format("mcd-demo-%s-backend-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-backend"
+            Tier = "backend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -56,8 +58,9 @@ terraform {
          availability_zone = var.az1
 
          tags = {
-            Name = "mcd-demo-teashop-frontend-subnet"
-            Tier = "front-end"
+            Name = format("mcd-demo-%s-frontend-subnet-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-frontend-subnet"
+            Tier = "frontend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -74,8 +77,10 @@ terraform {
          availability_zone = var.az1
 
          tags = {
-            Name = "mcd-demo-teashop-backend-subnet"
-            Tier = "back-end"
+            Name = format("mcd-demo-%s-backend-subnet-%s",var.application_name,var.tfrun_identifier)
+
+            #Name = "mcd-demo-teashop-backend-subnet"
+            Tier = "backend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -90,8 +95,9 @@ terraform {
          vpc_id = aws_vpc.custom_vpc_fe.id
 
          tags = {
-            Name = "mcd-demo-teashop-frontend-igw"
-            Tier = "front-end"
+            Name = format("mcd-demo-%s-frontend-igw-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-frontend-igw"
+            Tier = "frontend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -104,8 +110,9 @@ terraform {
          vpc_id = aws_vpc.custom_vpc_be.id
 
          tags = {
-            Name = "mcd-demo-teashop-backend-igw"
-            Tier = "back-end"
+            Name = format("mcd-demo-%s-backend-igw-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-backend-igw"
+            Tier = "backend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -126,8 +133,9 @@ terraform {
 
 
          tags = {
-            Name = "mcd-demo-teashop-fe-to-tgw-and-igw-rt"
-            Tier = "front-end"
+            Name = format("mcd-demo-%s-fe-to-igw-rt-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-fe-to-igw-rt"
+            Tier = "frontend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -146,8 +154,10 @@ terraform {
       
          
          tags = {
-            Name = "mcd-demo-teashop-be-to-tgw-and-igw-rt"
-            Tier = "back-end"
+            Name = format("mcd-demo-%s-be-to-igw-rt-%s",var.application_name,var.tfrun_identifier)
+
+            #Name = "mcd-demo-teashop-be-to-tgw-and-igw-rt"
+            Tier = "backend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier

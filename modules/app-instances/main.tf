@@ -52,8 +52,9 @@ terraform {
             encrypted   = false
          } 
          tags = {
-            Name = "mcd-demo-teashop-backend"
-            Tier = "front-end"
+            Name = format("mcd-demo-%s-backend-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-backend"
+            Tier = "backend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
@@ -139,8 +140,9 @@ terraform {
             encrypted   = false
          } 
          tags = {
-            Name = "mcd-demo-teashop-frontend"
-            Tier = "back-end"
+            Name = format("mcd-demo-%s-frontend-%s",var.application_name,var.tfrun_identifier)
+            #Name = "mcd-demo-teashop-frontend"
+            Tier = "frontend"
             Application = var.application_name
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier

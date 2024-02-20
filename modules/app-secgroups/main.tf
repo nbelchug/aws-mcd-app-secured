@@ -39,8 +39,9 @@ terraform {
       vpc_id      = var.app_fe_vpc_id
 
       tags = {
-         Name = "mcd-demo-teashop-frontend-sg"
-         Tier = "front-end"
+         Name = format("mcd-demo-%s-frontend-sg-%s",var.application_name,var.tfrun_identifier)
+         #Name = "mcd-demo-teashop-frontend-sg"
+         Tier = "frontend"
          Application = var.application_name
          Environment = var.environment
          ResourceGroup = var.tfrun_identifier
@@ -94,8 +95,9 @@ terraform {
       vpc_id      =  var.app_be_vpc_id
 
       tags = {
-         Name = "mcd-demo-teashop-backend-sg"
-         Tier = "back-end"
+         Name = format("mcd-demo-%s-backend-sg-%s",var.application_name,var.tfrun_identifier)
+         #Name = "mcd-demo-teashop-backend-sg"
+         Tier = "backend"
          Application = var.application_name
          Environment = var.environment
          ResourceGroup = var.tfrun_identifier
