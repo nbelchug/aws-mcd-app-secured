@@ -83,7 +83,10 @@ module "application_instances" {
 
 
 module "application_transitgateway" {
+  
   source = "./modules/app-tgw"
+
+  count = var.skip_tgw==true ? 1 : 0
   application_name = var.application_name
   environment = var.environment
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
@@ -105,6 +108,9 @@ module "application_transitgateway" {
 
 module "provision-mcd" {
   source = "./modules/provision-mcd"
+  
+  count = var.skip_mcd==true ? 1 : 0
+
   ciscomcd_api_key_file = var.ciscomcd_api_key_file
   csp_account_name = var.csp_account_name
   application_name = var.application_name

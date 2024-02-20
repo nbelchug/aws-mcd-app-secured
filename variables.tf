@@ -28,7 +28,10 @@ variable "skip_tgw"{
   type = bool
   default = true
 }
-
+variable "skip_mcd"{
+  type = bool
+  default = true
+}
 
 variable "keyname"{
   description = "name of RSA Key to use to connect Terraform to EC2 instances"
