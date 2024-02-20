@@ -109,6 +109,7 @@ terraform {
                user        = "ubuntu"
                private_key = "${file("~/.ssh/${var.keyname}.pem")}"
                host        = aws_instance.ec2_backend.public_ip
+               agent       = false
 
             }
       
@@ -194,6 +195,8 @@ terraform {
             user        = "ubuntu"
             private_key = "${file("~/.ssh/${var.keyname}.pem")}"
             host        = aws_instance.ec2_frontend.public_ip
+            agent       = false
+
 
          }
       }

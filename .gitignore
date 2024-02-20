@@ -1,0 +1,8 @@
+secret.tfvars
+.terraform
+.terraform.*
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.hcl
+put.sh
