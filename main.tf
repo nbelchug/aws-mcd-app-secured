@@ -42,6 +42,7 @@ provider "ciscomcd" {
 
 resource "random_pet" "tf_run" {
   keepers = {
+    length = 2
     # Generate a new pet name each time we switch to a new AMI id
     start_time =  "${timestamp()}"
   }
