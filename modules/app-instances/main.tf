@@ -171,6 +171,7 @@ terraform {
       }
 
       resource "null_resource" "frontend-config"{
+
          provisioner "remote-exec"{
                      inline = ["while [ ! -f /tmp/signal ]; do sleep 2; done",]
          }         
@@ -190,7 +191,6 @@ terraform {
             inline = ["chmod a+x /tmp/frontend.sh",
                      "echo 'COMMAND: /tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}'",
                      "/tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}",]
-
          }
 
          connection {

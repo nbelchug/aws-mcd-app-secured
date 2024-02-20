@@ -5,6 +5,9 @@ variable "environment"{
     type = string
 }
 
+variable "tfrun_identifier"{
+    type = string
+}
 
 variable "ec2_instance_ami"{
     type = string

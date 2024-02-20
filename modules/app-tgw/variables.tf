@@ -5,6 +5,9 @@ variable "application_name"{
 variable "environment"{
     type = string
 }
+variable "tfrun_identifier"{
+    type = string
+}
 variable "app_fe_vpc_id" {
     type = string
 }

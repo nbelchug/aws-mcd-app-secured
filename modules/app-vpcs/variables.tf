@@ -6,6 +6,9 @@ variable "application_name"{
 variable "environment"{
     type = string
 }
+variable "tfrun_identifier"{
+    type = string
+}
 
 variable "az_list"{
     type = list(string)

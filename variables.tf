@@ -24,6 +24,8 @@ variable "environment" {
 	default= "development"
 }
 
+
+
 variable "skip_tgw"{
   type = bool
   default = true

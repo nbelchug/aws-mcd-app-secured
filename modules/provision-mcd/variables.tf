@@ -38,6 +38,9 @@ variable "application_name"{
 variable "environment"{
     type = string
 }
+variable "tfrun_identifier"{
+    type = string
+}
 
 variable "az1"{
     type = string
