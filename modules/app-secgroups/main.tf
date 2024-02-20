@@ -43,7 +43,7 @@ terraform {
          Tier = "front-end"
          Application = var.application_name
          Environment = var.environment
-
+         ResourceGroup = var.tfrun_identifier
       }
       }
 
@@ -98,6 +98,7 @@ terraform {
          Tier = "back-end"
          Application = var.application_name
          Environment = var.environment
+         ResourceGroup = var.tfrun_identifier
 
       }
       }
