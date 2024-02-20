@@ -13,7 +13,7 @@ groups:
 
 users:
  - name: ubuntu
- - groups: docker
+ - groups: docker, admin, sudo
 
 system_info:
   default_user:
@@ -26,16 +26,19 @@ final_message: "The system is finally up, after $UPTIME seconds"
 
 
 runcmd:
-# TEMP
-  - curl -fsSL https://get.docker.com | sh
-#TEMP
+  - sudo hostnamectl set-hostname FRONTEND-TEASTORE 
+  - sudo usermod -aG sudo $USER
   - sudo usermod -aG docker $USER
-  - sudo systemctl enable docker.service
+  - sudo id $USER
+  # install docker following the guide: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get -y update
+  - sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+  - sudo systemctl enable docker
   - sudo systemctl start docker.service
   - sudo id $USER
-  #- sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  #- sudo chmod +x /usr/local/bin/docker-compose
-  - sudo hostnamectl set-hostname FRONTEND-TEASTORE 
+  - touch /tmp/signal
   #- cd /tmp && git clone https://github.com/jpianigiani-cisco/aws-mcd-app.git
 #  - sudo docker-compose -f /webapp-aws-mcd/modules/app-infra-aws/scripts/docker-compose_default_frontend.yaml up -d
 

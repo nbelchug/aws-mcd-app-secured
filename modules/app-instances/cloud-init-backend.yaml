@@ -36,6 +36,8 @@ runcmd:
   - sudo systemctl enable docker
   - sudo systemctl start docker.service
   - sudo id $USER
+  - touch /tmp/signal
+
 
 
 final_message: "The system is finally up, after $UPTIME seconds"

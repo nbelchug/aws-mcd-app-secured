@@ -87,8 +87,7 @@ terraform {
       resource "null_resource" "backend-config"{ 
 
          provisioner "remote-exec"{
-                     inline = ["echo 'connected!'",
-                              "docker version"]
+                     inline = ["while [ ! -f /tmp/signal ]; do sleep 2; done",]
          }
          triggers = {
             configfile = templatefile (   "${path.module}/backend.sh" , 
@@ -172,6 +171,10 @@ terraform {
       }
 
       resource "null_resource" "frontend-config"{
+         provisioner "remote-exec"{
+                     inline = ["while [ ! -f /tmp/signal ]; do sleep 2; done",]
+         }         
+         
          triggers = {
             configfile = templatefile (   "${path.module}/frontend.sh" , 
                                           {backendip = aws_instance.ec2_backend.private_ip
