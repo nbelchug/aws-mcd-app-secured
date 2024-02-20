@@ -86,7 +86,7 @@ module "application_transitgateway" {
   
   source = "./modules/app-tgw"
 
-  count = var.skip_tgw==true ? 1 : 0
+  count = var.skip_tgw==true ? 0 : 1
   application_name = var.application_name
   environment = var.environment
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
@@ -109,7 +109,7 @@ module "application_transitgateway" {
 module "provision-mcd" {
   source = "./modules/provision-mcd"
   
-  count = var.skip_mcd==true ? 1 : 0
+  count = var.skip_mcd==true ? 0 : 1
 
   ciscomcd_api_key_file = var.ciscomcd_api_key_file
   csp_account_name = var.csp_account_name
@@ -124,7 +124,7 @@ module "provision-mcd" {
 
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
   app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id
-  tgw_id                =   module.application_transitgateway.transit-gateway-id
+  tgw_id                =   var.skip_mcd==true ? "null" : module.application_transitgateway.transit-gateway-id
 
 
 }

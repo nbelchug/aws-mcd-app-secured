@@ -52,7 +52,7 @@ output "backend-nodes-public-ips" {
 
 output "transit-gateway-id"{
     description = "id of the tgw of the application in use "
-    value = module.application_transitgateway.transit-gateway-id
+    value = "${var.skip_mcd==true ? "" : module.application_transitgateway.transit-gateway-id}"
 }
 
 
