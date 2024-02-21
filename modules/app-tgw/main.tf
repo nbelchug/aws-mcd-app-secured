@@ -3,7 +3,11 @@
 
 terraform {
    required_providers {
-    aws = {
+    aws_this = {
+      source  = "hashicorp/aws"
+      version = "~> 5.33.0"
+    }
+   aws_peer = {
       source  = "hashicorp/aws"
       version = "~> 5.33.0"
     }

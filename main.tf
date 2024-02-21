@@ -102,8 +102,8 @@ module "application_transitgateway" {
   
   source = "./modules/app-tgw"
   providers = {
-    aws.this = aws
-    aws.peer = aws
+    aws_this = aws
+    aws_peer = aws
   }
   count = var.skip_tgw==true ? 0 : 1
   application_name =var.application_name
