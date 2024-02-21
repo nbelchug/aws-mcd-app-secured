@@ -90,7 +90,7 @@ terraform {
       resource "null_resource" "backend-config"{ 
 
          provisioner "remote-exec"{
-                     inline = ["while [ ! -f /tmp/signal ]; do sleep 2; done",]
+                     inline = ["while [ ! -f /tmp/signal ]; do sleep 3; done",]
          }
          triggers = {
             configfile = templatefile (   "${path.module}/backend.sh" , 
@@ -179,7 +179,7 @@ terraform {
       resource "null_resource" "frontend-config"{
 
          provisioner "remote-exec"{
-                     inline = ["while [ ! -f /tmp/signal ]; do sleep 2; done",]
+                     inline = ["while [ ! -f /tmp/signal ]; do sleep 3; done",]
          }         
          
          triggers = {
@@ -195,8 +195,9 @@ terraform {
          }
          provisioner "remote-exec" {
             inline = ["chmod a+x /tmp/frontend.sh",
-                     "echo 'COMMAND: /tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}'",
                      "/tmp/frontend.sh ${aws_instance.ec2_backend.private_ip}",]
+         
+         
          }
 
          connection {
