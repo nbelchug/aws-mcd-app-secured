@@ -166,7 +166,7 @@ terraform {
             gateway_id = aws_internet_gateway.igw_fe.id
          }
          route          {
-            cidr_block = = var.vpc_cidr_backend 
+            cidr_block = var.vpc_cidr_backend 
             vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
          }
       
@@ -193,7 +193,7 @@ terraform {
       }
 
          route          {
-            cidr_block = = var.vpc_cidr_frontend 
+            cidr_block = var.vpc_cidr_frontend 
             vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
          }
       
