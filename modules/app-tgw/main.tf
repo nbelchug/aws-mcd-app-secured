@@ -17,60 +17,50 @@ terraform {
   required_version = "~> 1.3"
 }
 
+terraform {
+   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.33.0"
+    }
+    ciscomcd = {
+      source = "CiscoDevNet/ciscomcd"
+      version = "0.2.4"
+    }
 
 
-      #----------------------------------------
-      # TRANSIT GATEWAYS ACROSS FE AND BE VPCs
-      resource "aws_ec2_transit_gateway" "fe-be-tgw" {
-         description                     = "Transit Gateway between FE and BE for app"
-         default_route_table_association = "enable"
-         default_route_table_propagation = "enable"
+  }
+  required_version = "~> 1.3"
+}
+      data "aws_caller_identity" "current" {}
 
-         tags                           = {
-            Name = format("mcd-demo-%s-tgw-%s",var.application_name,var.tfrun_identifier)
-            #Name                         = "mcd-demo-teashop-fe-be-tgw"
-            Application                  = var.application_name
-            Environment                  = var.environment
-            ResourceGroup = var.tfrun_identifier
+      resource "aws_vpc_peering_connection" "fe-be-peering"{
 
-         }
+         vpc_id = var.app_fe_vpc_id
+         peer_vpc_id = var.app_be_vpc_id
+         peer_owner_id =  data.aws_caller_identity.current.account_id
+      }
+
+      resource "aws_vpc_peering_connection_accepter" "accepter"{
+         provider                   = aws.accepter
+         vpc_peering_connection_id  = "${aws_vpc_peering_connection-owner.id}"
+         auto_accept                = true
       }
 
 
-
-      #----------------------------------------
-      # TRANSIT GATEWAYS ATTACHMENT BETWEEN FE AND TGW
-      resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-fe" {
-         subnet_ids         = [var.app_public_subnet_id]
-         transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-         vpc_id             = var.app_fe_vpc_id
-         transit_gateway_default_route_table_association = true
-         transit_gateway_default_route_table_propagation = true
-
-         tags               = {
-            Name = format("mcd-demo-%s-tgw-att-vpc-fe-%s",var.application_name,var.tfrun_identifier)
-            #Name             = "mcd-demo-tgw-att-vpc-fe"
-            Application   = var.application_name
-            Tier          = "frontend"
-            ResourceGroup = var.tfrun_identifier
+      resource "aws_route_rable" "fe_routetable"{
+         vpc_id = var.app_fe_vpc_id
 
       }
-      depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
-      }
-      #----------------------------------------
-      # TRANSIT GATEWAYS ATTACHMENT BETWEEN BE AND TGW
-      resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-att-vpc-be" {
-         subnet_ids         = [var.app_private_subnet_id]
-         transit_gateway_id = aws_ec2_transit_gateway.fe-be-tgw.id
-         vpc_id             = var.app_be_vpc_id
-         transit_gateway_default_route_table_association = true
-         transit_gateway_default_route_table_propagation = true
-         tags               = {
-               Name = format("mcd-demo-%s-tgw-att-vpc-be-%s",var.application_name,var.tfrun_identifier)
-               #Name             = "mcd-demo-tgw-att-vpc-be"
-               Application   = var.application_name
-               Tier          = "backend"
-         }
-         depends_on = [aws_ec2_transit_gateway.fe-be-tgw]
-      }
 
+      resource "aws_route" "fe-to-be-route" {
+         route_table_id            = aws_route_table.fe_routetable.id
+         destination_cidr_block    = var.app_be_cidr_block
+         vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+      }
+   
+      resource "aws_route" "be-to-fe-route" {
+         route_table_id            = aws_route_table.be_routetable.id
+         destination_cidr_block    = var.app_fe_cidr_block
+         vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+      }
