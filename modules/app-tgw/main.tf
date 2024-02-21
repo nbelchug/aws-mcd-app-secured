@@ -18,27 +18,30 @@ terraform {
 }
 
 
-      data "aws_caller_identity" "current" {}
+      #data "aws_caller_identity" "current" {}
 
       resource "aws_vpc_peering_connection" "fe-be-peering"{
 
          vpc_id = var.app_fe_vpc_id
          peer_vpc_id = var.app_be_vpc_id
-         peer_owner_id =  data.aws_caller_identity.current.account_id
+      #   peer_owner_id =  data.aws_caller_identity.current.account_id
       }
 
-      resource "aws_vpc_peering_connection_accepter" "accepter"{
-         provider                   = aws.accepter
-         vpc_peering_connection_id  = "${aws_vpc_peering_connection-owner.id}"
-         auto_accept                = true
-      }
+      #resource "aws_vpc_peering_connection_accepter" "accepter"{
+      #   provider                   = aws.accepter
+      #   vpc_peering_connection_id  = "${aws_vpc_peering_connection-owner.id}"
+      #   auto_accept                = true
+      #}
 
 
-      resource "aws_route_rable" "fe_routetable"{
+      resource "aws_route_table" "fe_routetable"{
          vpc_id = var.app_fe_vpc_id
 
       }
+      resource "aws_route_table" "be_routetable"{
+         vpc_id = var.app_be_vpc_id
 
+      }
       resource "aws_route" "fe-to-be-route" {
          route_table_id            = aws_route_table.fe_routetable.id
          destination_cidr_block    = var.app_be_cidr_block
