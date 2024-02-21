@@ -27,7 +27,7 @@ runcmd:
   - sudo usermod -aG sudo $USER
   - sudo usermod -aG docker $USER
   - sudo id $USER
-  - sudo hostnamectl set-hostname BACKEND-TEASTORE 
+  - sudo hostnamectl set-hostname APPLICATION-BACKEND
   # install docker following the guide: https://docs.docker.com/install/linux/docker-ce/ubuntu/
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
