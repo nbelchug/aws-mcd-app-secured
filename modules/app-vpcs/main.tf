@@ -190,7 +190,7 @@ terraform {
          route {
             cidr_block = "0.0.0.0/0"
             gateway_id = aws_internet_gateway.igw_be.id
-      }
+         }
 
          route          {
             cidr_block = var.vpc_cidr_frontend 
@@ -207,7 +207,7 @@ terraform {
             Environment = var.environment
             ResourceGroup = var.tfrun_identifier
 
-      }
+         }
       }
 
       # ---------------------------------------------------

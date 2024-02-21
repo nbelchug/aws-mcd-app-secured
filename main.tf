@@ -126,7 +126,8 @@ module "provision-mcd" {
 
   app_fe_vpc_id         =   module.application_vpcs.app_fe_vpc_id 
   app_be_vpc_id         =   module.application_vpcs.app_be_vpc_id
-  tgw_id                =   var.skip_mcd==true ? "null" : module.application_transitgateway.transit-gateway-id
+  
+  #tgw_id                =   var.skip_mcd==true ? "null" : module.application_transitgateway.transit-gateway-id
 
 
 }
