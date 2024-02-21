@@ -149,11 +149,11 @@ terraform {
       #   vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
       #}
    
-      resource "aws_route" "be-to-fe-route" {
-         route_table_id            =    
-         destination_cidr_block    = var.vpc_cidr_frontend
-         vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
-      }
+      #resource "aws_route" "be-to-fe-route" {
+      #   route_table_id            =    
+      #   destination_cidr_block    = var.vpc_cidr_frontend
+      #   vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+      #}
 
       # ---------------------------------------------
       # ROUTE TABLES - FRONTEND
