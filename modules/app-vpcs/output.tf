@@ -21,3 +21,8 @@ output "app_fe_cidr_block"{
 output "app_be_cidr_block"{
     value = aws_vpc.custom_vpc_be.cidr_block
 }
+
+output "fe-be-peering-connection-id"{
+    value = aws_vpc_peering_connection.fe-be-peering.id
+}
+

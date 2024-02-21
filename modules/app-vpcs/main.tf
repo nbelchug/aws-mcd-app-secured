@@ -2,7 +2,11 @@
 
 terraform {
    required_providers {
-    aws = {
+    aws-this = {
+      source  = "hashicorp/aws"
+      version = "~> 5.33.0"
+    }
+   aws-peer = {
       source  = "hashicorp/aws"
       version = "~> 5.33.0"
     }
@@ -119,6 +123,37 @@ terraform {
 
          }
       } 
+   
+      resource "aws_vpc_peering_connection" "fe-be-peering"{
+         vpc_id = aws_vpc.custom_vpc_fe.id
+         peer_vpc_id =aws_vpc.custom_vpc_be.id
+      #   peer_owner_id =  data.aws_caller_identity.current.account_id
+      }
+
+      #resource "aws_vpc_peering_connection_accepter" "accepter"{
+      #   provider                   = aws.accepter
+      #   vpc_peering_connection_id  = "${aws_vpc_peering_connection-owner.id}"
+      #   auto_accept                = true
+      #}
+
+
+      #resource "aws_route_table" "fe_routetable"{
+      #   vpc_id = var.app_fe_vpc_id
+      #}
+      #resource "aws_route_table" "be_routetable"{
+      #   vpc_id = var.app_be_vpc_id
+      #}
+      #resource "aws_route" "fe-to-be-route" {
+      #   route_table_id            = 
+      #   destination_cidr_block    = var.vpc_cidr_backend
+      #   vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+      #}
+   
+      resource "aws_route" "be-to-fe-route" {
+         route_table_id            =    
+         destination_cidr_block    = var.vpc_cidr_frontend
+         vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+      }
 
       # ---------------------------------------------
       # ROUTE TABLES - FRONTEND
@@ -126,10 +161,15 @@ terraform {
       resource "aws_route_table" "rt_fe" {
          vpc_id = aws_vpc.custom_vpc_fe.id
 
-         route {
+         route          {
             cidr_block = "0.0.0.0/0"
             gateway_id = aws_internet_gateway.igw_fe.id
-      }
+         }
+         route          {
+            cidr_block = = var.vpc_cidr_backend 
+            vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+         }
+      
 
 
          tags = {
@@ -151,6 +191,11 @@ terraform {
             cidr_block = "0.0.0.0/0"
             gateway_id = aws_internet_gateway.igw_be.id
       }
+
+         route          {
+            cidr_block = = var.vpc_cidr_frontend 
+            vpc_peering_connection_id = aws_vpc_peering_connection.fe-be-peering.id
+         }
       
          
          tags = {

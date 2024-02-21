@@ -25,11 +25,6 @@ variable "environment" {
 }
 
 
-
-variable "skip_tgw"{
-  type = bool
-  default = true
-}
 variable "skip_mcd"{
   type = bool
   default = true
