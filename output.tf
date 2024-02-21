@@ -50,9 +50,9 @@ output "backend-nodes-public-ips" {
 
 }
 
-output "transit-gateway-id"{
-    description = "id of the tgw of the application in use "
-    value = "${var.skip_mcd==true ? "" : module.application_transitgateway.transit-gateway-id}"
+output "vpc-peering-id"{
+    description = "id of the FE BE VPC peering of the application in use "
+    value = "${var.skip_mcd==true ? "" : module.application_transitgateway.aws_vpc_peering_connection.fe-be-peering.id}"
 }
 
 
