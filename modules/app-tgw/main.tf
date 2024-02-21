@@ -17,21 +17,7 @@ terraform {
   required_version = "~> 1.3"
 }
 
-terraform {
-   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.33.0"
-    }
-    ciscomcd = {
-      source = "CiscoDevNet/ciscomcd"
-      version = "0.2.4"
-    }
 
-
-  }
-  required_version = "~> 1.3"
-}
       data "aws_caller_identity" "current" {}
 
       resource "aws_vpc_peering_connection" "fe-be-peering"{
