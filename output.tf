@@ -52,7 +52,7 @@ output "backend-nodes-public-ips" {
 
 output "vpc-peering-id"{
     description = "id of the FE BE VPC peering of the application in use "
-    value = "${var.skip_mcd==true ? "" : module.application_transitgateway.aws_vpc_peering_connection.fe-be-peering.id}"
+    value = "${var.skip_mcd==true ? "" : module.application_vpcs.aws_vpc_peering_connection.fe-be-peering.id}"
 }
 
 

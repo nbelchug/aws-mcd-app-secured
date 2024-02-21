@@ -21,7 +21,7 @@ resource "ciscomcd_service_vpc" "aws_service_vpc" {
   region             = var.aws_region
   cidr               = var.service_vpc_subnet
   availability_zones = [var.az1]
-  transit_gateway_id = var.tgw_id
+  transit_gateway_id = "WE HAVE FIRST TO CREATE TGW WITH MCD!!"
   use_nat_gateway    = true
 
 #  tags = {
