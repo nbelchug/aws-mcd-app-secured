@@ -26,3 +26,11 @@ output "fe-be-peering-connection-id"{
     value = aws_vpc_peering_connection.fe-be-peering.id
 }
 
+output "aws_route_table_rt_be" {
+    value = aws_route_table.rt_be.id
+}
+
+output "aws_route_table_rt_fe" {
+    value = aws_route_table.rt_fe.id
+}
+
