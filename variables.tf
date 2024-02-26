@@ -155,3 +155,27 @@ variable "csp_account_name_mcd_reg" {
   type    = string
   default = "adt-emea-security-sandbox"
 }
+
+variable "app_fe_vpc_id"{
+  type = string
+}
+
+variable "app_be_vpc_id"{
+  type = string
+}
+
+variable "frontend-nodes-private-ips"{
+  type = []
+}
+
+variable "backend-nodes-private-ips"{
+  type = []
+}
+
+variable "aws_route_table_rt_be"{
+  type = string
+}
+
+variable "aws_route_table_rt_fe"{
+  type = string
+}
