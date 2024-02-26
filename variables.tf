@@ -12,11 +12,11 @@ variable "aws_region" {
   type    = string
   default = "us-east-1"
 }
-variable "application_name" {
-  description = "Name of the application. Must be unique."
-  type        = string
-  default     = "TEA-SHOP"
-}
+# variable "application-name" {
+#   description = "Name of the application. Must be unique."
+#   type        = string
+#   default     = "TEA-SHOP"
+# }
 
 variable "environment" {
   description = "environmet dev val ref prod for the application"
@@ -40,7 +40,7 @@ variable "skip_application_instances" {
   default = false
 }
 
-variable "keyname" {
+variable "aws_ssh_key_pair_name" {
   description = "name of RSA Key to use to connect Terraform to EC2 instances"
   type        = string
   default     = "terraform-key-devops-admin-ubuntu"
@@ -57,24 +57,10 @@ variable "az_list" {
   default = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 # AZ 1
-variable "az1" {
-  description = "availability zone 1"
+variable "aws_availability_zone" {
+  description = "availability zone"
   type        = string
   default     = "us-east-1a"
-}
-
-# AZ 2
-variable "az2" {
-  description = "availability zone 2"
-  type        = string
-  default     = "us-east-1b"
-}
-
-# AZ 3
-variable "az3" {
-  description = "availability zone c"
-  type        = string
-  default     = "us-east-1c"
 }
 
 # custom VPC variable
@@ -139,7 +125,7 @@ variable "nof_backend_nodes" {
   default     = 1
 }
 
-variable "mcd-gateway-policy" {
+variable "gateway-policy" {
   type        = string
   description = "MCD Gateway Policy Name"
   default     = "mcd-gateway-policy"
@@ -153,7 +139,6 @@ variable "mcd-service-vpc" {
 
 variable "csp_account_name_mcd_reg" {
   type    = string
-  default = "adt-emea-security-sandbox"
 }
 
 variable "app_fe_vpc_id"{
@@ -165,11 +150,11 @@ variable "app_be_vpc_id"{
 }
 
 variable "frontend-nodes-private-ips"{
-  type = []
+  type = string
 }
 
 variable "backend-nodes-private-ips"{
-  type = []
+  type = string
 }
 
 variable "aws_route_table_rt_be"{
@@ -177,5 +162,9 @@ variable "aws_route_table_rt_be"{
 }
 
 variable "aws_route_table_rt_fe"{
+  type = string
+}
+
+variable "transit-gateway-id"{
   type = string
 }

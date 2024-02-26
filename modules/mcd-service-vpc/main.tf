@@ -12,16 +12,16 @@ terraform {
   required_version = "~> 1.3"
 }
 
-resource "aws_ec2_transit_gateway" "mcd_transit_gateway" {
-  default_route_table_association = "disable"
-  default_route_table_propagation = "disable"
-  dns_support                     = "enable"
-  transit_gateway_cidr_blocks     = []
-  vpn_ecmp_support                = "enable"
-  tags = {
-    Name = "mcd-service-vpc-tgw"
-  }
-}
+# resource "aws_ec2_transit_gateway" "mcd_transit_gateway" {
+#   default_route_table_association = "disable"
+#   default_route_table_propagation = "disable"
+#   dns_support                     = "enable"
+#   transit_gateway_cidr_blocks     = []
+#   vpn_ecmp_support                = "enable"
+#   tags = {
+#     Name = "mcd-service-vpc-tgw"
+#   }
+# }
 
 resource "ciscomcd_service_vpc" "service_vpc" {
   name             = "mcd-service-vpc"
@@ -32,17 +32,12 @@ resource "ciscomcd_service_vpc" "service_vpc" {
   ]
   cidr               = "10.100.0.0/16"
   region             = var.aws_region
-  transit_gateway_id = aws_ec2_transit_gateway.mcd_transit_gateway.id
-  depends_on = [
-    aws_ec2_transit_gateway.mcd_transit_gateway
-  ]
+  transit_gateway_id = var.transit-gateway-id
 }
 
 data "aws_key_pair" "aws_ssh_key_pair" {
   key_name = var.aws_ssh_key_pair_name
 }
-
-data "aws_region" "current" {}
 
 resource "ciscomcd_policy_rule_set" "mcd_egress_rule_set" {
   name = "mcd-egress-policy-ruleset"
@@ -96,9 +91,9 @@ resource "ciscomcd_gateway" "mcd_gateway_ingress" {
   ]
 }
 
-output "mcd_transit_gateway_id" {
-  value = aws_ec2_transit_gateway.mcd_transit_gateway.id
-}
+# output "mcd_transit_gateway_id" {
+#   value = aws_ec2_transit_gateway.mcd_transit_gateway.id
+# }
 
 output "mcd_service_vpc_id" {
   value = ciscomcd_service_vpc.service_vpc.id
@@ -242,7 +237,7 @@ resource "ciscomcd_policy_rules" "ingress_policy_rules" {
     state   = "ENABLED"
     action  = "Allow Log"
     type    = "ReverseProxy"
-    service = ciscomcd_service_object.tea-shop-fe-services.id
+    service = ciscomcd_service_object.tea-shop-fe-ssh.id
   }
   rule {
     name    = "ssh-backend-end"
@@ -256,7 +251,7 @@ resource "ciscomcd_policy_rules" "ingress_policy_rules" {
     state   = "ENABLED"
     action  = "Allow Log"
     type    = "ReverseProxy"
-    service = ciscomcd_service_object.tea-shop-fe-ssh.id
+    service = ciscomcd_service_object.tea-shop-fe-services.id
   }
   depends_on = [
     ciscomcd_gateway.mcd_gateway_ingress
@@ -271,10 +266,8 @@ resource "aws_default_route_table" "app_fe_vpc_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_ec2_transit_gateway.mcd_transit_gateway.id
+    gateway_id = var.transit-gateway-id
   }
-  depends_on = [
-  aws_ec2_transit_gateway.mcd_transit_gateway]
 }
 
 # Replace routes of spoke VPC - BE
@@ -284,9 +277,6 @@ resource "aws_default_route_table" "app_be_vpc_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_ec2_transit_gateway.mcd_transit_gateway.id
+    gateway_id = var.transit-gateway-id
   }
-
-  depends_on = [
-  aws_ec2_transit_gateway.mcd_transit_gateway]
 }

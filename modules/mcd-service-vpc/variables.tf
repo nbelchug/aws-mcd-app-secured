@@ -1,6 +1,6 @@
-variable "mcd_cloud_account_name" {
-  description = "Name used to represent the AWS Account in the MCD Dashboard."
-}
+# variable "mcd_cloud_account_name" {
+#   description = "Name used to represent the AWS Account in the MCD Dashboard."
+# }
 
 variable "aws_availability_zone" {
   description = "AWS availability zone in which to create the Service VPC Transit Gateway instance."
@@ -46,5 +46,9 @@ variable "aws_route_table_rt_be"{
 }
 
 variable "aws_route_table_rt_fe"{
+  type=string
+}
+
+variable "transit-gateway-id"{
   type=string
 }
