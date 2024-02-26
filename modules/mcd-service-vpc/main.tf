@@ -57,13 +57,13 @@ resource "ciscomcd_gateway" "mcd_gateway_egress" {
   vpc_id                 = ciscomcd_service_vpc.service_vpc.id
   aws_iam_role_firewall  = "ciscomcd-gateway-role"
   csp_account_name       = var.csp_account_name_mcd_reg
-  gateway_image          = "23.10-02" // Via MCD admin portal **Administration** / **System**
+  gateway_image          = "23.10-03" // Via MCD admin portal **Administration** / **System**
   instance_type          = "AWS_M5_LARGE"
   max_instances          = 1
   min_instances          = 1
   mode                   = "HUB"
   policy_rule_set_id     = ciscomcd_policy_rule_set.mcd_egress_rule_set.id
-  region                 = "us-east-1"
+  region                 = var.aws_region
   security_type          = "EGRESS"
   ssh_key_pair           = data.aws_key_pair.aws_ssh_key_pair.key_name
   gateway_state          = "ACTIVE"
@@ -79,13 +79,13 @@ resource "ciscomcd_gateway" "mcd_gateway_ingress" {
   vpc_id                 = ciscomcd_service_vpc.service_vpc.id
   aws_iam_role_firewall  = "ciscomcd-gateway-role"
   csp_account_name       = var.csp_account_name_mcd_reg
-  gateway_image          = "23.10-02" // Via MCD admin portal **Administration** / **System**
+  gateway_image          = "23.10-03" // Via MCD admin portal **Administration** / **System**
   instance_type          = "AWS_M5_LARGE"
   max_instances          = 1
   min_instances          = 1
   mode                   = "HUB"
   policy_rule_set_id     = ciscomcd_policy_rule_set.mcd_ingress_rule_set.id
-  region                 = "us-east-1"
+  region                 = var.aws_region
   security_type          = "INGRESS"
   ssh_key_pair           = data.aws_key_pair.aws_ssh_key_pair.key_name
   gateway_state          = "ACTIVE"
@@ -123,18 +123,18 @@ data "ciscomcd_address_object" "cisco-subnet" {
 }
 
 resource "ciscomcd_address_object" "tea-shop-fe-rp" {
-  name        = "tea-shop-fe-rp"
-  description = "Static tea-shop-fe IP reverse proxy type"
-  type        = "STATIC"
-  value       = var.frontend-nodes-private-ips
+  name            = "tea-shop-fe-rp"
+  description     = "Static tea-shop-fe IP reverse proxy type"
+  type            = "STATIC"
+  value           = var.frontend-nodes-private-ips
   backend_address = true
 }
 
 resource "ciscomcd_address_object" "tea-shop-be-rp" {
-  name        = "tea-shop-be-rp"
-  description = "Static tea-shop-fe IP reverse proxy type"
-  type        = "STATIC"
-  value       = var.backend-nodes-private-ips
+  name            = "tea-shop-be-rp"
+  description     = "Static tea-shop-fe IP reverse proxy type"
+  type            = "STATIC"
+  value           = var.backend-nodes-private-ips
   backend_address = true
 }
 
@@ -217,7 +217,7 @@ resource "ciscomcd_policy_rules" "egress_policy_rules" {
     destination = ciscomcd_address_object.tea-shop-be.id
     type        = "Forwarding"
     service     = ciscomcd_service_object.tea-shop-be-services-1.id
-    source      = ciscomcd_address_object.tea-shop-fe.id 
+    source      = ciscomcd_address_object.tea-shop-fe.id
   }
   rule {
     name        = "back-end-services-2"
@@ -226,7 +226,7 @@ resource "ciscomcd_policy_rules" "egress_policy_rules" {
     destination = ciscomcd_address_object.tea-shop-be.id
     type        = "Forwarding"
     service     = ciscomcd_service_object.tea-shop-be-services-2.id
-    source      = ciscomcd_address_object.tea-shop-fe.id 
+    source      = ciscomcd_address_object.tea-shop-fe.id
   }
   depends_on = [
     ciscomcd_gateway.mcd_gateway_egress
@@ -238,25 +238,25 @@ resource "ciscomcd_policy_rules" "egress_policy_rules" {
 resource "ciscomcd_policy_rules" "ingress_policy_rules" {
   rule_set_id = ciscomcd_policy_rule_set.mcd_ingress_rule_set.id
   rule {
-    name        = "ssh-front-end"
-    state       = "ENABLED"
-    action      = "Allow Log"
-    type        = "ReverseProxy"
-    service     = ciscomcd_service_object.tea-shop-fe-services.id
+    name    = "ssh-front-end"
+    state   = "ENABLED"
+    action  = "Allow Log"
+    type    = "ReverseProxy"
+    service = ciscomcd_service_object.tea-shop-fe-services.id
   }
   rule {
-    name        = "ssh-backend-end"
-    state       = "ENABLED"
-    action      = "Allow Log"
-    type        = "ReverseProxy"
-    service     = ciscomcd_service_object.tea-shop-be-ssh.id
+    name    = "ssh-backend-end"
+    state   = "ENABLED"
+    action  = "Allow Log"
+    type    = "ReverseProxy"
+    service = ciscomcd_service_object.tea-shop-be-ssh.id
   }
   rule {
-    name        = "ssh-front-end-services"
-    state       = "ENABLED"
-    action      = "Allow Log"
-    type        = "ReverseProxy"
-    service     = ciscomcd_service_object.tea-shop-fe-ssh.id
+    name    = "ssh-front-end-services"
+    state   = "ENABLED"
+    action  = "Allow Log"
+    type    = "ReverseProxy"
+    service = ciscomcd_service_object.tea-shop-fe-ssh.id
   }
   depends_on = [
     ciscomcd_gateway.mcd_gateway_ingress
@@ -270,11 +270,11 @@ resource "aws_default_route_table" "app_fe_vpc_rt" {
   default_route_table_id = var.aws_route_table_rt_fe
 
   route {
-    cidr_block =  "0.0.0.0/0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_ec2_transit_gateway.mcd_transit_gateway.id
   }
   depends_on = [
-    aws_ec2_transit_gateway.mcd_transit_gateway]
+  aws_ec2_transit_gateway.mcd_transit_gateway]
 }
 
 # Replace routes of spoke VPC - BE
@@ -283,10 +283,10 @@ resource "aws_default_route_table" "app_be_vpc_rt" {
   default_route_table_id = var.aws_route_table_rt_be
 
   route {
-    cidr_block =  "0.0.0.0/0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_ec2_transit_gateway.mcd_transit_gateway.id
   }
 
   depends_on = [
-    aws_ec2_transit_gateway.mcd_transit_gateway]
+  aws_ec2_transit_gateway.mcd_transit_gateway]
 }
