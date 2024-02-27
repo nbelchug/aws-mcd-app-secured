@@ -275,7 +275,7 @@ resource "aws_default_route_table" "app_fe_vpc_rt" {
 resource "aws_default_route_table" "app_be_vpc_rt" {
   default_route_table_id = var.aws_route_table_rt_be
 
-  route {
+  route { 
     cidr_block = "0.0.0.0/0"
     transit_gateway_id = var.transit-gateway-id
   }
