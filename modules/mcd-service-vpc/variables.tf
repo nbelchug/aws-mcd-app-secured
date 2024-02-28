@@ -11,44 +11,93 @@ variable "aws_ssh_key_pair_name" {
   description = "SSH Keypair ID used for App EC2 Instances."
 }
 
-variable "csp_account_name_mcd_reg" {
-  description = "The CSP Account name (configured in Multicloud Defense) where the Service VPC/VNet will be deployed"
-}
-
 variable "aws_region"{
   type= string
   description = "CSP Account Name"
 }
 
-variable "mcd-gateway-policy"{
-  type=string
-  description = "MCD Gateway Policy Name"
+variable "csp_account_name_mcd_reg" {
+  description = "The CSP Account name (configured in Multicloud Defense) where the Service VPC/VNet will be deployed"
 }
 
-variable "app_fe_vpc_id"{
-  type=string
+variable "transit-gateway-id" {
+  type = string
 }
 
-variable "app_be_vpc_id"{
-  type=string
+# dev env
+
+variable "dev-app-fe-vpc-id" {
+  type = string
 }
 
-variable "backend-nodes-private-ips"{
-  type=list
+variable "dev-app-be-vpc-id" {
+  type = string
 }
 
-variable "frontend-nodes-private-ips"{
-  type=list
+variable "dev-frontend-nodes-private-ips" {
+  type = string
 }
 
-variable "aws_route_table_rt_be"{
-  type=string
+variable "dev-backend-nodes-private-ips" {
+  type = string
 }
 
-variable "aws_route_table_rt_fe"{
-  type=string
+variable "dev-aws-route-table-rt-be" {
+  type = string
 }
 
-variable "transit-gateway-id"{
-  type=string
+variable "dev-aws-route-table-rt-fe" {
+  type = string
+}
+
+# val env
+
+variable "val-app-fe-vpc-id" {
+  type = string
+}
+
+variable "val-app-be-vpc-id" {
+  type = string
+}
+
+variable "val-frontend-nodes-private-ips" {
+  type = string
+}
+
+variable "val-backend-nodes-private-ips" {
+  type = string
+}
+
+variable "val-aws-route-table-rt-be" {
+  type = string
+}
+
+variable "val-aws-route-table-rt-fe" {
+  type = string
+}
+
+# pro env
+
+variable "pro-app-fe-vpc-id" {
+  type = string
+}
+
+variable "pro-app-be-vpc-id" {
+  type = string
+}
+
+variable "pro-frontend-nodes-private-ips" {
+  type = string
+}
+
+variable "pro-backend-nodes-private-ips" {
+  type = string
+}
+
+variable "pro-aws-route-table-rt-be" {
+  type = string
+}
+
+variable "pro-aws-route-table-rt-fe" {
+  type = string
 }
