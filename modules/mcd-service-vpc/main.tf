@@ -84,6 +84,18 @@ output "mcd_service_vpc_id" {
   value = ciscomcd_service_vpc.service_vpc.id
 }
 
+data "aws_lb" "mcd-ingress-igw" {
+  # name = ciscomcd_gateway.mcd_gateway_ingress.aws_gateway_lb
+  tags = { "valtix_gateway":"mcd-ingress-gw-01"}
+  depends_on = [
+    ciscomcd_gateway.mcd_gateway_ingress
+  ]
+}
+
+output "mcd-ingress-igw-fqdn"{
+  value = data.aws_lb.mcd-ingress-igw.dns_name
+}
+
 # TODO define cisco-subnet into the demo pre-req list
 data "ciscomcd_address_object" "cisco-subnet" {
   name = "cisco-subnet"
