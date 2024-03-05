@@ -106,20 +106,22 @@ data "ciscomcd_address_object" "cisco-subnet" {
 
 resource "ciscomcd_service_object" "tea-shop-be-services-1" {
   name           = "dev-tea-shop-be-services-1"
-  service_type   = "ForwardProxy"
+  service_type   = "Forwarding"
   transport_mode = "HTTP"
   port {
     destination_ports = "10000"
   }
+  source_nat = false
 }
 
 resource "ciscomcd_service_object" "tea-shop-be-services-2" {
   name           = "dev-tea-shop-be-services-2"
-  service_type   = "ForwardProxy"
+  service_type   = "Forwarding"
   transport_mode = "HTTP"
   port {
     destination_ports = "3306"
   }
+  source_nat = false
 }
 
 ## dev env
