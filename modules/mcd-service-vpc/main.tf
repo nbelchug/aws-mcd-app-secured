@@ -12,17 +12,6 @@ terraform {
   required_version = "~> 1.3"
 }
 
-# resource "aws_ec2_transit_gateway" "mcd_transit_gateway" {
-#   default_route_table_association = "disable"
-#   default_route_table_propagation = "disable"
-#   dns_support                     = "enable"
-#   transit_gateway_cidr_blocks     = []
-#   vpn_ecmp_support                = "enable"
-#   tags = {
-#     Name = "mcd-service-vpc-tgw"
-#   }
-# }
-
 resource "ciscomcd_service_vpc" "service_vpc" {
   name             = "mcd-service-vpc"
   csp_account_name = var.csp_account_name_mcd_reg
@@ -91,12 +80,20 @@ resource "ciscomcd_gateway" "mcd_gateway_ingress" {
   ]
 }
 
-# output "mcd_transit_gateway_id" {
-#   value = aws_ec2_transit_gateway.mcd_transit_gateway.id
-# }
-
 output "mcd_service_vpc_id" {
   value = ciscomcd_service_vpc.service_vpc.id
+}
+
+data "aws_lb" "mcd-ingress-igw" {
+  # name = ciscomcd_gateway.mcd_gateway_ingress.aws_gateway_lb
+  tags = { "valtix_gateway":"mcd-ingress-gw-01"}
+  depends_on = [
+    ciscomcd_gateway.mcd_gateway_ingress
+  ]
+}
+
+output "mcd-ingress-igw-fqdn"{
+  value = data.aws_lb.mcd-ingress-igw.dns_name
 }
 
 # Attach fe, be vpc to egress gw
@@ -110,11 +107,6 @@ resource "ciscomcd_spoke_vpc" "mcd_spok_fe" {
 resource "ciscomcd_spoke_vpc" "mcd_spoke_be" {
   service_vpc_id = ciscomcd_service_vpc.service_vpc.id
   spoke_vpc_id   = var.app_be_vpc_id
-}
-
-# TODO define cisco-subnet into the demo pre-req list
-data "ciscomcd_address_object" "cisco-subnet" {
-  name = "cisco-subnet"
 }
 
 resource "ciscomcd_address_object" "tea-shop-fe-rp" {
