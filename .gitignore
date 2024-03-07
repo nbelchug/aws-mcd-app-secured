@@ -5,4 +5,4 @@ secret.tfvars
 terraform.tfstate
 terraform.tfstate.backup
 *.hcl
-put.sh
+output.json
